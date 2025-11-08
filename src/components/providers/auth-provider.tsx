@@ -3,7 +3,7 @@
 import { createContext, type ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 
 import { iamApi } from "@/lib/iam/api";
-import { ApiError } from "@/lib/http";
+import { ApiError, setCsrfToken } from "@/lib/http";
 import type { ProfileResponse } from "@/types/api";
 
 export type AuthStatus = "loading" | "authenticated" | "unauthenticated";
@@ -30,6 +30,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       setUser(null);
       setStatus("unauthenticated");
+      setCsrfToken(null);
 
       if (!(error instanceof ApiError && error.status === 401)) {
         console.error("Failed to load profile", error);
