@@ -2,12 +2,15 @@
 
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import { toast } from "sonner";
 import {
   Activity,
   Building2,
   KeySquare,
   LayoutDashboard,
   LockKeyhole,
+  LogOut,
   Settings2,
   ShieldCheck,
   UsersRound,
@@ -28,7 +31,9 @@ import {
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
+import { getApiErrorMessage } from "@/lib/http";
 
 type NavItem = {
   title: string;
@@ -81,7 +86,8 @@ const navSections: NavSection[] = [
 export function AppSidebar() {
   const router = useRouter();
   const pathname = router.pathname;
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const initials =
     user?.name
@@ -157,9 +163,27 @@ export function AppSidebar() {
               {user?.organisation?.name ?? "Cerberus IAM"}
             </span>
           </div>
-          <Badge variant="secondary" className="text-xs">
-            {user?.organisation?.slug ?? "tenant"}
-          </Badge>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="gap-2"
+            onClick={async () => {
+              setIsLoggingOut(true);
+              try {
+                await logout();
+                toast.success("Signed out");
+                router.replace("/login");
+              } catch (error) {
+                toast.error(getApiErrorMessage(error, "Failed to sign out, please try again."));
+              } finally {
+                setIsLoggingOut(false);
+              }
+            }}
+            disabled={isLoggingOut}
+          >
+            <LogOut className="size-4" />
+            {isLoggingOut ? "Signing out…" : "Sign out"}
+          </Button>
         </div>
       </SidebarFooter>
     </Sidebar>
