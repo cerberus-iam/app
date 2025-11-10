@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
 import {
   ThemeProvider as NextThemesProvider,
   type ThemeProviderProps as NextThemeProviderProps,
-} from "next-themes";
-import { type ReactNode } from "react";
+} from 'next-themes';
+import { type ReactNode } from 'react';
 
 type ThemeProviderProps = {
   children: ReactNode;
-  attribute?: NextThemeProviderProps["attribute"];
+  attribute?: NextThemeProviderProps['attribute'];
 };
 
-export function ThemeProvider({ children, attribute = "class" }: ThemeProviderProps) {
+export function ThemeProvider({ children, attribute = 'class' }: ThemeProviderProps) {
   return (
     <NextThemesProvider
       attribute={attribute}

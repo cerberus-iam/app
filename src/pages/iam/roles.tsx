@@ -1,11 +1,11 @@
-import { type ReactElement } from "react";
-import { ShieldPlus } from "lucide-react";
+import { type ReactElement } from 'react';
+import { ShieldPlus } from 'lucide-react';
 
-import type { NextPageWithLayout } from "@/types/page";
-import { AppLayout } from "@/components/layout/app-layout";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import type { NextPageWithLayout } from '@/types/page';
+import { AppLayout } from '@/components/layout/app-layout';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -13,9 +13,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { useIamRoles } from "@/hooks/use-iam-data";
-import { formatRelativeTime } from "@/lib/iam";
+} from '@/components/ui/table';
+import { useIamRoles } from '@/hooks/use-iam-data';
+import { formatRelativeTime } from '@/lib/iam';
 
 const RolesPage: NextPageWithLayout = () => {
   const { data: roles, isLoading, error, refresh } = useIamRoles();
@@ -74,7 +74,7 @@ const RolesPage: NextPageWithLayout = () => {
                     <p className="text-xs text-muted-foreground">{role.slug}</p>
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">
-                    {role.description ?? "—"}
+                    {role.description ?? '—'}
                     <div className="mt-2 flex flex-wrap gap-1">
                       {role.permissions?.slice(0, 4).map((permission) => (
                         <Badge key={permission.id} variant="secondary" className="text-xs">
@@ -92,7 +92,7 @@ const RolesPage: NextPageWithLayout = () => {
                     <Badge variant="outline">{role._count?.users ?? 0}</Badge>
                   </TableCell>
                   <TableCell className="text-right text-sm text-muted-foreground">
-                    {role.updatedAt ? formatRelativeTime(role.updatedAt) : "—"}
+                    {role.updatedAt ? formatRelativeTime(role.updatedAt) : '—'}
                   </TableCell>
                 </TableRow>
               ))}
@@ -109,7 +109,7 @@ RolesPage.getLayout = function getLayout(page: ReactElement) {
     <AppLayout
       title="Role & Policy Management"
       description="Define and govern reusable role definitions that power least privilege access."
-      breadcrumbs={[{ label: "Identity & Access", href: "/iam/users" }, { label: "Roles" }]}
+      breadcrumbs={[{ label: 'Identity & Access', href: '/iam/users' }, { label: 'Roles' }]}
       actions={
         <Button className="gap-2">
           <ShieldPlus className="size-4" />

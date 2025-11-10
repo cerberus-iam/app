@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { toast } from "sonner";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { toast } from 'sonner';
 import {
   Activity,
   Building2,
@@ -14,7 +14,7 @@ import {
   Settings2,
   ShieldCheck,
   UsersRound,
-} from "lucide-react";
+} from 'lucide-react';
 
 import {
   Sidebar,
@@ -28,19 +28,19 @@ import {
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/use-auth";
-import { getApiErrorMessage } from "@/lib/http";
+} from '@/components/ui/sidebar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks/use-auth';
+import { getApiErrorMessage } from '@/lib/http';
 
 type NavItem = {
   title: string;
   href: string;
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   badge?: string;
-  status?: "default" | "beta" | "soon";
+  status?: 'default' | 'beta' | 'soon';
 };
 
 type NavSection = {
@@ -50,35 +50,35 @@ type NavSection = {
 
 const navSections: NavSection[] = [
   {
-    title: "Overview",
+    title: 'Overview',
     items: [
       {
-        title: "Dashboard",
-        href: "/",
+        title: 'Dashboard',
+        href: '/',
         icon: LayoutDashboard,
       },
     ],
   },
   {
-    title: "Identity & Access",
+    title: 'Identity & Access',
     items: [
-      { title: "Users", href: "/iam/users", icon: UsersRound },
-      { title: "Roles", href: "/iam/roles", icon: ShieldCheck },
-      { title: "Policies", href: "/iam/policies", icon: LockKeyhole },
-      { title: "Audit Logs", href: "/audit/logs", icon: Activity },
+      { title: 'Users', href: '/iam/users', icon: UsersRound },
+      { title: 'Roles', href: '/iam/roles', icon: ShieldCheck },
+      { title: 'Policies', href: '/iam/policies', icon: LockKeyhole },
+      { title: 'Audit Logs', href: '/audit/logs', icon: Activity },
     ],
   },
   {
-    title: "Organization",
+    title: 'Organization',
     items: [
-      { title: "Tenants", href: "/iam/tenants", icon: Building2, badge: "6" },
+      { title: 'Tenants', href: '/iam/tenants', icon: Building2, badge: '6' },
       {
-        title: "API Tokens",
-        href: "/iam/api-keys",
+        title: 'API Tokens',
+        href: '/iam/api-keys',
         icon: KeySquare,
-        status: "beta",
+        status: 'beta',
       },
-      { title: "Settings", href: "/settings/preferences", icon: Settings2 },
+      { title: 'Settings', href: '/settings/preferences', icon: Settings2 },
     ],
   },
 ];
@@ -91,11 +91,11 @@ export function AppSidebar() {
 
   const initials =
     user?.name
-      ?.split(" ")
+      ?.split(' ')
       .map((part) => part.charAt(0))
-      .join("")
+      .join('')
       .slice(0, 2)
-      .toUpperCase() ?? "AD";
+      .toUpperCase() ?? 'AD';
 
   return (
     <Sidebar className="border-r">
@@ -130,12 +130,12 @@ export function AppSidebar() {
                         <item.icon className="size-4" />
                         <span>{item.title}</span>
                         {item.badge && <SidebarMenuBadge>{item.badge}</SidebarMenuBadge>}
-                        {item.status === "beta" && (
+                        {item.status === 'beta' && (
                           <Badge variant="outline" className="ml-auto text-xs">
                             Beta
                           </Badge>
                         )}
-                        {item.status === "soon" && (
+                        {item.status === 'soon' && (
                           <Badge variant="secondary" className="ml-auto text-xs">
                             Soon
                           </Badge>
@@ -153,15 +153,15 @@ export function AppSidebar() {
         <div className="flex flex-col items-start gap-3 rounded-md border bg-sidebar-accent/40 p-3">
           <div className="flex w-full items-start gap-3">
             <Avatar className="size-10">
-              <AvatarImage src={undefined} alt={user?.name ?? "Admin"} />
+              <AvatarImage src={undefined} alt={user?.name ?? 'Admin'} />
               <AvatarFallback>{initials}</AvatarFallback>
             </Avatar>
             <div className="flex flex-1 flex-col">
               <span className="text-sm font-medium text-sidebar-foreground">
-                {user?.name ?? user?.email ?? "Admin"}
+                {user?.name ?? user?.email ?? 'Admin'}
               </span>
               <span className="text-xs text-muted-foreground">
-                {user?.organisation?.name ?? "Cerberus IAM"}
+                {user?.organisation?.name ?? 'Cerberus IAM'}
               </span>
             </div>
           </div>
@@ -173,10 +173,10 @@ export function AppSidebar() {
               setIsLoggingOut(true);
               try {
                 await logout();
-                toast.success("Signed out");
-                router.replace("/login");
+                toast.success('Signed out');
+                router.replace('/login');
               } catch (error) {
-                toast.error(getApiErrorMessage(error, "Failed to sign out, please try again."));
+                toast.error(getApiErrorMessage(error, 'Failed to sign out, please try again.'));
               } finally {
                 setIsLoggingOut(false);
               }
@@ -184,7 +184,7 @@ export function AppSidebar() {
             disabled={isLoggingOut}
           >
             <LogOut className="size-4" />
-            {isLoggingOut ? "Signing out…" : "Sign out"}
+            {isLoggingOut ? 'Signing out…' : 'Sign out'}
           </Button>
         </div>
       </SidebarFooter>

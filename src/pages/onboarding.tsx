@@ -1,33 +1,33 @@
-import { useState } from "react";
-import Link from "next/link";
-import { Building2, ChevronLeft } from "lucide-react";
+import { useState } from 'react';
+import Link from 'next/link';
+import { Building2, ChevronLeft } from 'lucide-react';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Stepper } from "@/components/ui/stepper";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Stepper } from '@/components/ui/stepper';
 import {
   OrganizationStep,
   type OrganizationFormValues,
-} from "@/components/blocks/onboarding/organization-step";
+} from '@/components/blocks/onboarding/organization-step';
 import {
   AdminUserStep,
   type AdminUserFormValues,
-} from "@/components/blocks/onboarding/admin-user-step";
-import { CompletionStep } from "@/components/blocks/onboarding/completion-step";
-import type { OnboardingData } from "@/types/auth";
-import { toast } from "sonner";
+} from '@/components/blocks/onboarding/admin-user-step';
+import { CompletionStep } from '@/components/blocks/onboarding/completion-step';
+import type { OnboardingData } from '@/types/auth';
+import { toast } from 'sonner';
 
 const steps = [
   {
-    title: "Organization",
-    description: "Set up your organization",
+    title: 'Organization',
+    description: 'Set up your organization',
   },
   {
-    title: "Admin Account",
-    description: "Create your admin user",
+    title: 'Admin Account',
+    description: 'Create your admin user',
   },
   {
-    title: "Complete",
-    description: "Review and finish",
+    title: 'Complete',
+    description: 'Review and finish',
   },
 ];
 
@@ -59,17 +59,17 @@ export default function OnboardingPage() {
       // TODO: Replace with actual API call
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
-      console.log("Onboarding data:", completeData);
+      console.log('Onboarding data:', completeData);
 
       setOnboardingData(completeData);
       setCurrentStep(3);
 
-      toast.success("Organization created successfully!", {
-        description: "Your organization and admin account have been set up.",
+      toast.success('Organization created successfully!', {
+        description: 'Your organization and admin account have been set up.',
       });
     } catch {
-      toast.error("Failed to create organization", {
-        description: "Please try again or contact support if the problem persists.",
+      toast.error('Failed to create organization', {
+        description: 'Please try again or contact support if the problem persists.',
       });
     } finally {
       setIsSubmitting(false);
@@ -142,11 +142,11 @@ export default function OnboardingPage() {
 
         {/* Footer */}
         <p className="mt-8 text-center text-xs text-muted-foreground">
-          By creating an organization, you agree to our{" "}
+          By creating an organization, you agree to our{' '}
           <Link href="/terms" className="underline hover:text-foreground">
             Terms of Service
-          </Link>{" "}
-          and{" "}
+          </Link>{' '}
+          and{' '}
           <Link href="/privacy" className="underline hover:text-foreground">
             Privacy Policy
           </Link>

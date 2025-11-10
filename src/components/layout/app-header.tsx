@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Fragment, type ReactNode } from "react";
-import Link from "next/link";
-import { Bell, Filter, Search } from "lucide-react";
+import { Fragment, type ReactNode } from 'react';
+import Link from 'next/link';
+import { Bell, Filter, Search } from 'lucide-react';
 
 import {
   Breadcrumb,
@@ -11,12 +11,12 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
+} from '@/components/ui/breadcrumb';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
+import { SidebarTrigger } from '@/components/ui/sidebar';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 export type AppBreadcrumbItem = {
   label: string;
@@ -33,7 +33,7 @@ export type AppHeaderProps = {
 export function AppHeader({ title, description, breadcrumbs, actions }: AppHeaderProps) {
   const items = breadcrumbs?.length
     ? breadcrumbs
-    : [{ label: "Dashboard", href: "/" }, { label: title }];
+    : [{ label: 'Dashboard', href: '/' }, { label: title }];
 
   return (
     <header className="flex flex-col gap-4 border-b bg-background/70 px-6 py-4 backdrop-blur supports-[backdrop-filter]:bg-background/50">

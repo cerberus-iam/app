@@ -79,10 +79,10 @@ Unit tests focus on testing individual functions and utilities in isolation. The
 **Example:** [src/lib/iam/utils.test.ts](src/lib/iam/utils.test.ts)
 
 ```typescript
-describe("buildPermissionKey", () => {
-  it("should build a permission key from resource and action", () => {
-    const key = buildPermissionKey("users", "read");
-    expect(key).toBe("users:read");
+describe('buildPermissionKey', () => {
+  it('should build a permission key from resource and action', () => {
+    const key = buildPermissionKey('users', 'read');
+    expect(key).toBe('users:read');
   });
 });
 ```
@@ -132,13 +132,13 @@ E2E tests verify complete user flows in a real browser environment.
 **Example:** [e2e/login.spec.ts](e2e/login.spec.ts)
 
 ```typescript
-test("should submit form with valid credentials", async ({ page }) => {
-  await page.goto("/login");
-  await page.getByLabel("Email").fill("test@example.com");
-  await page.getByLabel("Password").fill("password123");
-  await page.getByRole("button", { name: "Sign in" }).click();
-  await page.waitForURL("/");
-  await expect(page).toHaveURL("/");
+test('should submit form with valid credentials', async ({ page }) => {
+  await page.goto('/login');
+  await page.getByLabel('Email').fill('test@example.com');
+  await page.getByLabel('Password').fill('password123');
+  await page.getByRole('button', { name: 'Sign in' }).click();
+  await page.waitForURL('/');
+  await expect(page).toHaveURL('/');
 });
 ```
 
@@ -260,15 +260,15 @@ test.only("should test something", async ({ page }) => {
 ### Mocking API Calls (Jest)
 
 ```typescript
-jest.mock("@/lib/api", () => ({
-  fetchUsers: jest.fn(() => Promise.resolve([{ id: 1, name: "Test" }])),
+jest.mock('@/lib/api', () => ({
+  fetchUsers: jest.fn(() => Promise.resolve([{ id: 1, name: 'Test' }])),
 }));
 ```
 
 ### Intercepting Network Requests (Playwright)
 
 ```typescript
-await page.route("**/api/login", (route) => {
+await page.route('**/api/login', (route) => {
   route.fulfill({
     status: 200,
     body: JSON.stringify({ success: true }),

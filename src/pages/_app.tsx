@@ -1,10 +1,10 @@
-import "@/styles/globals.css";
-import type { NextPage } from "next";
-import type { AppProps } from "next/app";
-import { type ReactElement, type ReactNode } from "react";
+import '@/styles/globals.css';
+import type { NextPage } from 'next';
+import type { AppProps } from 'next/app';
+import { type ReactElement, type ReactNode } from 'react';
 
-import { AuthProvider } from "@/components/providers/auth-provider";
-import { ThemeProvider } from "@/components/providers/theme-provider";
+import { AuthProvider } from '@/components/providers/auth-provider';
+import { ThemeProvider } from '@/components/providers/theme-provider';
 
 type NextPageWithLayout<P = Record<string, unknown>> = NextPage<P> & {
   getLayout?: (page: ReactElement) => ReactNode;

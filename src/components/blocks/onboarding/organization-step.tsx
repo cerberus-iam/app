@@ -1,10 +1,10 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Building2, Globe, Hash } from "lucide-react";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { Building2, Globe, Hash } from 'lucide-react';
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Form,
   FormControl,
@@ -13,23 +13,23 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from '@/components/ui/form';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 
 const organizationSchema = z.object({
-  name: z.string().min(2, { message: "Organization name must be at least 2 characters" }),
+  name: z.string().min(2, { message: 'Organization name must be at least 2 characters' }),
   slug: z
     .string()
-    .min(3, { message: "Slug must be at least 3 characters" })
+    .min(3, { message: 'Slug must be at least 3 characters' })
     .max(50)
     .regex(/^[a-z0-9-]+$/, {
-      message: "Slug can only contain lowercase letters, numbers, and hyphens",
+      message: 'Slug can only contain lowercase letters, numbers, and hyphens',
     }),
   domain: z.string().optional(),
   industry: z.string().optional(),
@@ -45,26 +45,26 @@ interface OrganizationStepProps {
 }
 
 const industries = [
-  "Technology",
-  "Healthcare",
-  "Finance",
-  "Education",
-  "Retail",
-  "Manufacturing",
-  "Other",
+  'Technology',
+  'Healthcare',
+  'Finance',
+  'Education',
+  'Retail',
+  'Manufacturing',
+  'Other',
 ];
 
-const companySizes = ["1-10", "11-50", "51-200", "201-500", "501-1000", "1000+"];
+const companySizes = ['1-10', '11-50', '51-200', '201-500', '501-1000', '1000+'];
 
 export function OrganizationStep({ defaultValues, onNext, onBack }: OrganizationStepProps) {
   const form = useForm<OrganizationFormValues>({
     resolver: zodResolver(organizationSchema),
     defaultValues: defaultValues || {
-      name: "",
-      slug: "",
-      domain: "",
-      industry: "",
-      size: "",
+      name: '',
+      slug: '',
+      domain: '',
+      industry: '',
+      size: '',
     },
   });
 
@@ -72,10 +72,10 @@ export function OrganizationStep({ defaultValues, onNext, onBack }: Organization
   const handleNameChange = (name: string) => {
     const slug = name
       .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, "")
-      .replace(/\s+/g, "-")
-      .replace(/-+/g, "-");
-    form.setValue("slug", slug);
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+    form.setValue('slug', slug);
   };
 
   function onSubmit(data: OrganizationFormValues) {
@@ -207,7 +207,7 @@ export function OrganizationStep({ defaultValues, onNext, onBack }: Organization
               Back
             </Button>
           )}
-          <Button type="submit" className={!onBack ? "ml-auto" : ""}>
+          <Button type="submit" className={!onBack ? 'ml-auto' : ''}>
             Continue
           </Button>
         </div>

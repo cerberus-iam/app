@@ -1,11 +1,11 @@
-import { type ReactElement } from "react";
-import { Plus } from "lucide-react";
+import { type ReactElement } from 'react';
+import { Plus } from 'lucide-react';
 
-import type { NextPageWithLayout } from "@/types/page";
-import { AppLayout } from "@/components/layout/app-layout";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import type { NextPageWithLayout } from '@/types/page';
+import { AppLayout } from '@/components/layout/app-layout';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -13,9 +13,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { useIamUsers } from "@/hooks/use-iam-data";
-import { formatRelativeTime } from "@/lib/iam";
+} from '@/components/ui/table';
+import { useIamUsers } from '@/hooks/use-iam-data';
+import { formatRelativeTime } from '@/lib/iam';
 
 const UsersPage: NextPageWithLayout = () => {
   const { data: users, isLoading, refresh } = useIamUsers();
@@ -78,8 +78,8 @@ const UsersPage: NextPageWithLayout = () => {
                       )}
                     </TableCell>
                     <TableCell>
-                      <Badge variant={user.mfaEnabled ? "secondary" : "outline"}>
-                        {user.mfaEnabled ? "Enabled" : "Disabled"}
+                      <Badge variant={user.mfaEnabled ? 'secondary' : 'outline'}>
+                        {user.mfaEnabled ? 'Enabled' : 'Disabled'}
                       </Badge>
                     </TableCell>
                     <TableCell>
@@ -104,7 +104,7 @@ UsersPage.getLayout = function getLayout(page: ReactElement) {
     <AppLayout
       title="User Directory"
       description="Manage identities, invitations, lifecycle states, and MFA enrollment."
-      breadcrumbs={[{ label: "Identity & Access", href: "/iam/users" }, { label: "Users" }]}
+      breadcrumbs={[{ label: 'Identity & Access', href: '/iam/users' }, { label: 'Users' }]}
       actions={
         <div className="flex items-center gap-2">
           <Button variant="outline">Bulk import</Button>
@@ -124,12 +124,12 @@ export default UsersPage;
 
 function getUserStatus(user: { blockedAt: string | null; emailVerifiedAt: string | null }) {
   if (user.blockedAt) {
-    return { label: "Blocked", variant: "destructive" as const };
+    return { label: 'Blocked', variant: 'destructive' as const };
   }
 
   if (!user.emailVerifiedAt) {
-    return { label: "Pending", variant: "outline" as const };
+    return { label: 'Pending', variant: 'outline' as const };
   }
 
-  return { label: "Active", variant: "secondary" as const };
+  return { label: 'Active', variant: 'secondary' as const };
 }

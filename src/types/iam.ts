@@ -1,12 +1,12 @@
 export type IAMPermissionResource =
-  | "users"
-  | "roles"
-  | "policies"
-  | "tenants"
-  | "api-tokens"
-  | "audit";
+  | 'users'
+  | 'roles'
+  | 'policies'
+  | 'tenants'
+  | 'api-tokens'
+  | 'audit';
 
-export type IAMPermissionAction = "read" | "create" | "update" | "delete" | "assign" | "review";
+export type IAMPermissionAction = 'read' | 'create' | 'update' | 'delete' | 'assign' | 'review';
 
 export type IAMPermissionKey = `${IAMPermissionResource}:${IAMPermissionAction}`;
 
@@ -25,7 +25,7 @@ export type IAMRole = {
   permissions: IAMPermissionKey[];
 };
 
-export type IAMUserStatus = "active" | "invited" | "suspended" | "disabled";
+export type IAMUserStatus = 'active' | 'invited' | 'suspended' | 'disabled';
 
 export type IAMUser = {
   id: string;
@@ -38,9 +38,9 @@ export type IAMUser = {
   tenantId: string;
 };
 
-export type IAMTenantStatus = "active" | "pending" | "suspended";
+export type IAMTenantStatus = 'active' | 'pending' | 'suspended';
 
-export type IAMTenantPlan = "free" | "team" | "enterprise";
+export type IAMTenantPlan = 'free' | 'team' | 'enterprise';
 
 export type IAMTenant = {
   id: string;
@@ -50,9 +50,9 @@ export type IAMTenant = {
   createdAt: string;
 };
 
-export type IAMAuditSeverity = "low" | "medium" | "high";
+export type IAMAuditSeverity = 'low' | 'medium' | 'high';
 
-export type IAMAuditActorType = "user" | "service" | "system";
+export type IAMAuditActorType = 'user' | 'service' | 'system';
 
 export type IAMAuditEvent = {
   id: string;

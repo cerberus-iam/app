@@ -1,10 +1,10 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState } from 'react';
 
-import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import type { PermissionRecord } from "@/types/api";
+import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import type { PermissionRecord } from '@/types/api';
 
 type PermissionsSelectorProps = {
   permissions: PermissionRecord[];
@@ -23,7 +23,7 @@ export function PermissionsSelector({
   isLoading,
   error,
 }: PermissionsSelectorProps) {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();

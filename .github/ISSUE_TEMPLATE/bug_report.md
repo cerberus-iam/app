@@ -1,7 +1,7 @@
 ---
 name: "\U0001F41E Bug Report"
 about: Help us fix an issue in the Admin Web Portal
-labels: ["bug", "needs-triage"]
+labels: ['bug', 'needs-triage']
 ---
 
 ## Description

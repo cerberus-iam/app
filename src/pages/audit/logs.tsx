@@ -1,10 +1,10 @@
-import { type ReactElement } from "react";
-import { Funnel, RefreshCw } from "lucide-react";
+import { type ReactElement } from 'react';
+import { Funnel, RefreshCw } from 'lucide-react';
 
-import type { NextPageWithLayout } from "@/types/page";
-import { AppLayout } from "@/components/layout/app-layout";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import type { NextPageWithLayout } from '@/types/page';
+import { AppLayout } from '@/components/layout/app-layout';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -12,10 +12,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { useAuditLogs } from "@/hooks/use-iam-data";
-import { formatRelativeTime } from "@/lib/iam";
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { useAuditLogs } from '@/hooks/use-iam-data';
+import { formatRelativeTime } from '@/lib/iam';
 
 const AuditLogsPage: NextPageWithLayout = () => {
   const { data: events, isLoading, refresh } = useAuditLogs(50);
@@ -71,7 +71,7 @@ const AuditLogsPage: NextPageWithLayout = () => {
                     {formatRelativeTime(event.createdAt)}
                   </TableCell>
                   <TableCell>
-                    {event.user?.name || event.user?.email || event.client?.name || "System"}
+                    {event.user?.name || event.user?.email || event.client?.name || 'System'}
                     <p className="text-xs text-muted-foreground capitalize">
                       {event.eventCategory}
                     </p>
@@ -87,8 +87,8 @@ const AuditLogsPage: NextPageWithLayout = () => {
                     )}
                   </TableCell>
                   <TableCell className="text-right">
-                    <Badge variant={event.success ? "outline" : "destructive"}>
-                      {event.success ? "Success" : "Failed"}
+                    <Badge variant={event.success ? 'outline' : 'destructive'}>
+                      {event.success ? 'Success' : 'Failed'}
                     </Badge>
                   </TableCell>
                 </TableRow>
@@ -106,7 +106,7 @@ AuditLogsPage.getLayout = function getLayout(page: ReactElement) {
     <AppLayout
       title="Audit Activity"
       description="Investigate critical security events across tenants and systems."
-      breadcrumbs={[{ label: "Identity & Access", href: "/iam/users" }, { label: "Audit Logs" }]}
+      breadcrumbs={[{ label: 'Identity & Access', href: '/iam/users' }, { label: 'Audit Logs' }]}
     >
       {page}
     </AppLayout>

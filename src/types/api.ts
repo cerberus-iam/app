@@ -52,7 +52,7 @@ export type UserSummary = {
   blockedReason: string | null;
   createdAt: string;
   updatedAt: string;
-  roles: Array<Pick<RoleSummary, "id" | "name" | "slug">>;
+  roles: Array<Pick<RoleSummary, 'id' | 'name' | 'slug'>>;
   teams?: TeamSummary[];
 };
 
@@ -62,8 +62,8 @@ export type AuditLogEntry = {
   userId: string | null;
   clientId: string | null;
   eventType: string;
-  eventCategory: "auth" | "user" | "client" | "permission" | "system";
-  action: "create" | "read" | "update" | "delete" | "login" | "logout";
+  eventCategory: 'auth' | 'user' | 'client' | 'permission' | 'system';
+  action: 'create' | 'read' | 'update' | 'delete' | 'login' | 'logout';
   resourceType: string;
   resourceId: string | null;
   success: boolean;
@@ -121,7 +121,7 @@ export type ProfileResponse = {
   phone: string | null;
   mfaEnabled: boolean;
   organisation: OrganisationSummary;
-  roles: Array<Pick<RoleSummary, "id" | "name" | "slug">>;
+  roles: Array<Pick<RoleSummary, 'id' | 'name' | 'slug'>>;
   permissions: string[];
 };
 

@@ -1,10 +1,10 @@
-import { type ReactElement } from "react";
-import { AlertTriangle, CheckCircle2, Shield, UserPlus, UsersRound } from "lucide-react";
+import { type ReactElement } from 'react';
+import { AlertTriangle, CheckCircle2, Shield, UserPlus, UsersRound } from 'lucide-react';
 
-import type { NextPageWithLayout } from "@/types/page";
-import { AppLayout } from "@/components/layout/app-layout";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import type { NextPageWithLayout } from '@/types/page';
+import { AppLayout } from '@/components/layout/app-layout';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -12,7 +12,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -20,10 +20,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { useAuditLogs, useIamRoles, useIamUsers } from "@/hooks/use-iam-data";
-import { formatRelativeTime } from "@/lib/iam";
-import type { AuditLogEntry } from "@/types/api";
+} from '@/components/ui/table';
+import { useAuditLogs, useIamRoles, useIamUsers } from '@/hooks/use-iam-data';
+import { formatRelativeTime } from '@/lib/iam';
+import type { AuditLogEntry } from '@/types/api';
 
 const DashboardPage: NextPageWithLayout = () => {
   const {
@@ -47,31 +47,31 @@ const DashboardPage: NextPageWithLayout = () => {
 
   const stats = [
     {
-      label: "Total users",
-      value: usersLoading ? "…" : totalUsers.toString(),
+      label: 'Total users',
+      value: usersLoading ? '…' : totalUsers.toString(),
       helper:
         usersLoading || unverifiedUsers === 0
-          ? "Directory synced"
+          ? 'Directory synced'
           : `${unverifiedUsers} awaiting verification`,
       icon: UsersRound,
     },
     {
-      label: "MFA coverage",
-      value: usersLoading ? "…" : `${mfaCoverage}%`,
+      label: 'MFA coverage',
+      value: usersLoading ? '…' : `${mfaCoverage}%`,
       helper:
-        totalUsers > 0 ? `${mfaEnabled}/${totalUsers} identities protected` : "No active users",
+        totalUsers > 0 ? `${mfaEnabled}/${totalUsers} identities protected` : 'No active users',
       icon: CheckCircle2,
     },
     {
-      label: "Blocked accounts",
-      value: usersLoading ? "…" : blockedUsers.toString(),
-      helper: blockedUsers > 0 ? "Review risk signals" : "All identities healthy",
+      label: 'Blocked accounts',
+      value: usersLoading ? '…' : blockedUsers.toString(),
+      helper: blockedUsers > 0 ? 'Review risk signals' : 'All identities healthy',
       icon: AlertTriangle,
     },
     {
-      label: "Active roles",
-      value: rolesLoading ? "…" : totalRoles.toString(),
-      helper: rolesLoading ? "Loading permissions…" : "Role-based access ready",
+      label: 'Active roles',
+      value: rolesLoading ? '…' : totalRoles.toString(),
+      helper: rolesLoading ? 'Loading permissions…' : 'Role-based access ready',
       icon: Shield,
     },
   ];
@@ -190,8 +190,8 @@ const DashboardPage: NextPageWithLayout = () => {
                 <div key={event.id} className="rounded-lg border p-3">
                   <div className="flex items-center justify-between text-sm">
                     <span className="font-medium">{event.eventType}</span>
-                    <Badge variant={event.success ? "outline" : "destructive"}>
-                      {event.success ? "Success" : "Failure"}
+                    <Badge variant={event.success ? 'outline' : 'destructive'}>
+                      {event.success ? 'Success' : 'Failure'}
                     </Badge>
                   </div>
                   <p className="mt-1 text-sm text-muted-foreground capitalize">
@@ -247,7 +247,7 @@ const DashboardPage: NextPageWithLayout = () => {
                     {role.isDefault && <Badge variant="outline">Default</Badge>}
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    {role.description ?? "No description provided."}
+                    {role.description ?? 'No description provided.'}
                   </p>
                 </div>
                 <Badge variant="secondary">
@@ -289,7 +289,7 @@ DashboardPage.getLayout = function getLayout(page: ReactElement) {
     <AppLayout
       title="Identity Overview"
       description="Monitor user lifecycle, role assignments, and recent audit activity."
-      breadcrumbs={[{ label: "Overview", href: "/" }]}
+      breadcrumbs={[{ label: 'Overview', href: '/' }]}
       actions={
         <div className="flex items-center gap-2">
           <Button variant="outline">Export audit log</Button>
@@ -309,14 +309,14 @@ export default DashboardPage;
 
 function getUserStatus(user: { blockedAt: string | null; emailVerifiedAt: string | null }) {
   if (user.blockedAt) {
-    return { label: "Blocked", variant: "destructive" as const };
+    return { label: 'Blocked', variant: 'destructive' as const };
   }
 
   if (!user.emailVerifiedAt) {
-    return { label: "Pending", variant: "outline" as const };
+    return { label: 'Pending', variant: 'outline' as const };
   }
 
-  return { label: "Active", variant: "secondary" as const };
+  return { label: 'Active', variant: 'secondary' as const };
 }
 
 function tallyCategories(events: AuditLogEntry[]) {
@@ -327,11 +327,11 @@ function tallyCategories(events: AuditLogEntry[]) {
   }, {});
 }
 
-function getAuditReason(metadata: AuditLogEntry["metadata"]) {
-  if (!metadata || typeof metadata !== "object") {
+function getAuditReason(metadata: AuditLogEntry['metadata']) {
+  if (!metadata || typeof metadata !== 'object') {
     return null;
   }
 
   const reason = (metadata as Record<string, unknown>).reason;
-  return typeof reason === "string" ? reason : null;
+  return typeof reason === 'string' ? reason : null;
 }

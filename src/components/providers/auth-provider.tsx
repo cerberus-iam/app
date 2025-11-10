@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { createContext, type ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import { createContext, type ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
-import { iamApi } from "@/lib/iam/api";
-import { ApiError, setCsrfToken } from "@/lib/http";
-import type { ProfileResponse } from "@/types/api";
+import { iamApi } from '@/lib/iam/api';
+import { ApiError, setCsrfToken } from '@/lib/http';
+import type { ProfileResponse } from '@/types/api';
 
-export type AuthStatus = "loading" | "authenticated" | "unauthenticated";
+export type AuthStatus = 'loading' | 'authenticated' | 'unauthenticated';
 
 type AuthContextValue = {
   user: ProfileResponse | null;
@@ -20,20 +20,20 @@ export const AuthContext = createContext<AuthContextValue | undefined>(undefined
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<ProfileResponse | null>(null);
-  const [status, setStatus] = useState<AuthStatus>("loading");
+  const [status, setStatus] = useState<AuthStatus>('loading');
 
   const refresh = useCallback(async () => {
     try {
       const profile = await iamApi.me.profile();
       setUser(profile);
-      setStatus("authenticated");
+      setStatus('authenticated');
     } catch (error) {
       setUser(null);
-      setStatus("unauthenticated");
+      setStatus('unauthenticated');
       setCsrfToken(null);
 
       if (!(error instanceof ApiError && error.status === 401)) {
-        console.error("Failed to load profile", error);
+        console.error('Failed to load profile', error);
       }
       throw error;
     }
@@ -55,10 +55,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       await iamApi.auth.logout();
     } catch (error) {
-      console.error("Failed to logout", error);
+      console.error('Failed to logout', error);
     } finally {
       setUser(null);
-      setStatus("unauthenticated");
+      setStatus('unauthenticated');
     }
   }, []);
 

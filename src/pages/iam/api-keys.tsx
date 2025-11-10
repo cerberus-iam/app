@@ -1,15 +1,15 @@
-import { type ReactElement, useState } from "react";
-import { Copy, KeyRound, ShieldCheck, Trash2 } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
+import { type ReactElement, useState } from 'react';
+import { Copy, KeyRound, ShieldCheck, Trash2 } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
 
-import type { NextPageWithLayout } from "@/types/page";
-import { AppLayout } from "@/components/layout/app-layout";
-import { PermissionsSelector } from "@/components/iam/permissions-selector";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import type { NextPageWithLayout } from '@/types/page';
+import { AppLayout } from '@/components/layout/app-layout';
+import { PermissionsSelector } from '@/components/iam/permissions-selector';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -17,15 +17,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -33,9 +33,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -46,18 +46,18 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { useIamApiKeys, usePermissions } from "@/hooks/use-iam-data";
-import { iamApi } from "@/lib/iam/api";
-import { formatRelativeTime } from "@/lib/iam";
-import { getApiErrorMessage } from "@/lib/http";
-import type { ApiKeySummary } from "@/types/api";
+} from '@/components/ui/alert-dialog';
+import { useIamApiKeys, usePermissions } from '@/hooks/use-iam-data';
+import { iamApi } from '@/lib/iam/api';
+import { formatRelativeTime } from '@/lib/iam';
+import { getApiErrorMessage } from '@/lib/http';
+import type { ApiKeySummary } from '@/types/api';
 
 const formSchema = z.object({
-  name: z.string().min(3, "Provide a descriptive name"),
-  scopes: z.array(z.string()).min(1, "Select at least one scope"),
+  name: z.string().min(3, 'Provide a descriptive name'),
+  scopes: z.array(z.string()).min(1, 'Select at least one scope'),
   expiresInDays: z
-    .union([z.string().regex(/^\d+$/, "Must be a positive integer"), z.literal("")])
+    .union([z.string().regex(/^\d+$/, 'Must be a positive integer'), z.literal('')])
     .optional(),
 });
 
@@ -164,7 +164,7 @@ const ApiKeysPage: NextPageWithLayout = () => {
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right text-sm text-muted-foreground">
-                    {key.lastUsedAt ? formatRelativeTime(key.lastUsedAt) : "Never"}
+                    {key.lastUsedAt ? formatRelativeTime(key.lastUsedAt) : 'Never'}
                   </TableCell>
                   <TableCell className="text-right">
                     <RevokeKeyButton apiKey={key} onRevoked={refresh} />
@@ -184,7 +184,7 @@ ApiKeysPage.getLayout = function getLayout(page: ReactElement) {
     <AppLayout
       title="API Token Management"
       description="Issue, rotate, and revoke service-level credentials."
-      breadcrumbs={[{ label: "Identity & Access", href: "/iam/users" }, { label: "API Tokens" }]}
+      breadcrumbs={[{ label: 'Identity & Access', href: '/iam/users' }, { label: 'API Tokens' }]}
       actions={
         <CreateApiKeyDialog
           trigger={
@@ -216,9 +216,9 @@ function CreateApiKeyDialog({ trigger, onCreated }: CreateApiKeyDialogProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      name: '',
       scopes: [],
-      expiresInDays: "",
+      expiresInDays: '',
     },
   });
 
@@ -230,20 +230,20 @@ function CreateApiKeyDialog({ trigger, onCreated }: CreateApiKeyDialogProps) {
         scopes: values.scopes,
       };
 
-      if (values.expiresInDays && values.expiresInDays !== "") {
+      if (values.expiresInDays && values.expiresInDays !== '') {
         payload.expiresInDays = Number(values.expiresInDays);
       }
 
       try {
         const response = await iamApi.admin.apiKeys.create(payload);
         onCreated?.(response.key);
-        toast.success("API key created");
+        toast.success('API key created');
         form.reset();
         setOpen(false);
       } catch (error) {
         const message = getApiErrorMessage(
           error,
-          "Unable to create API key. Please refresh and try again.",
+          'Unable to create API key. Please refresh and try again.',
         );
         toast.error(message);
       }
@@ -308,7 +308,7 @@ function CreateApiKeyDialog({ trigger, onCreated }: CreateApiKeyDialogProps) {
               )}
             />
             <Button type="submit" className="w-full" disabled={submitting}>
-              {submitting ? "Issuing key…" : "Create API key"}
+              {submitting ? 'Issuing key…' : 'Create API key'}
             </Button>
           </form>
         </Form>
@@ -324,10 +324,10 @@ function RevokeKeyButton({ apiKey, onRevoked }: { apiKey: ApiKeySummary; onRevok
     setIsSubmitting(true);
     try {
       await iamApi.admin.apiKeys.revoke(apiKey.id);
-      toast.success("API key revoked");
+      toast.success('API key revoked');
       onRevoked();
     } catch (error) {
-      toast.error(getApiErrorMessage(error, "Failed to revoke API key. Try again."));
+      toast.error(getApiErrorMessage(error, 'Failed to revoke API key. Try again.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -347,8 +347,8 @@ function RevokeKeyButton({ apiKey, onRevoked }: { apiKey: ApiKeySummary; onRevok
           <AlertDialogTitle>Revoke API key</AlertDialogTitle>
           <AlertDialogDescription>
             {disabled
-              ? "This key is already revoked."
-              : "Revoking will immediately invalidate the credential. This action cannot be undone."}
+              ? 'This key is already revoked.'
+              : 'Revoking will immediately invalidate the credential. This action cannot be undone.'}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -364,10 +364,10 @@ function RevokeKeyButton({ apiKey, onRevoked }: { apiKey: ApiKeySummary; onRevok
 
 function resolveApiKeyStatus(key: ApiKeySummary) {
   if (key.revokedAt) {
-    return { label: "Revoked", variant: "destructive" as const };
+    return { label: 'Revoked', variant: 'destructive' as const };
   }
   if (key.expiresAt && new Date(key.expiresAt) < new Date()) {
-    return { label: "Expired", variant: "outline" as const };
+    return { label: 'Expired', variant: 'outline' as const };
   }
-  return { label: "Active", variant: "secondary" as const };
+  return { label: 'Active', variant: 'secondary' as const };
 }

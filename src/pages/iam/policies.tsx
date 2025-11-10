@@ -1,14 +1,14 @@
-import { type ReactElement, useState } from "react";
-import { FileText } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { type ReactElement, useState } from 'react';
+import { FileText } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-import type { NextPageWithLayout } from "@/types/page";
-import { AppLayout } from "@/components/layout/app-layout";
-import { PermissionsSelector } from "@/components/iam/permissions-selector";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import type { NextPageWithLayout } from '@/types/page';
+import { AppLayout } from '@/components/layout/app-layout';
+import { PermissionsSelector } from '@/components/iam/permissions-selector';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -16,24 +16,24 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { usePermissions } from "@/hooks/use-iam-data";
+} from '@/components/ui/select';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { usePermissions } from '@/hooks/use-iam-data';
 
 const policySchema = z.object({
-  name: z.string().min(3, "Enter a policy name"),
+  name: z.string().min(3, 'Enter a policy name'),
   description: z.string().optional(),
-  effect: z.enum(["allow", "deny"]),
-  scopes: z.array(z.string()).min(1, "Choose at least one permission"),
+  effect: z.enum(['allow', 'deny']),
+  scopes: z.array(z.string()).min(1, 'Choose at least one permission'),
 });
 
 const PoliciesPage: NextPageWithLayout = () => {
@@ -44,9 +44,9 @@ const PoliciesPage: NextPageWithLayout = () => {
   const form = useForm<z.infer<typeof policySchema>>({
     resolver: zodResolver(policySchema),
     defaultValues: {
-      name: "",
-      description: "",
-      effect: "allow",
+      name: '',
+      description: '',
+      effect: 'allow',
       scopes: [],
     },
   });
@@ -55,7 +55,7 @@ const PoliciesPage: NextPageWithLayout = () => {
     setPreview(
       JSON.stringify(
         {
-          version: "2025-01-01",
+          version: '2025-01-01',
           statement: [
             {
               effect: values.effect,
@@ -174,7 +174,7 @@ PoliciesPage.getLayout = function getLayout(page: ReactElement) {
     <AppLayout
       title="Policy Authoring"
       description="Design guardrails, simulate blast radius, and ship permission changes safely."
-      breadcrumbs={[{ label: "Identity & Access", href: "/iam/users" }, { label: "Policies" }]}
+      breadcrumbs={[{ label: 'Identity & Access', href: '/iam/users' }, { label: 'Policies' }]}
       actions={
         <Button className="gap-2">
           <FileText className="size-4" />

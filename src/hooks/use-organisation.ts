@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from 'react';
 
-import { iamApi } from "@/lib/iam/api";
-import type { OrganisationDetails } from "@/types/api";
-import { useAuth } from "./use-auth";
+import { iamApi } from '@/lib/iam/api';
+import type { OrganisationDetails } from '@/types/api';
+import { useAuth } from './use-auth';
 
 export function useOrganisation() {
   const { status } = useAuth();
@@ -18,7 +18,7 @@ export function useOrganisation() {
   }, []);
 
   useEffect(() => {
-    if (status !== "authenticated") {
+    if (status !== 'authenticated') {
       return;
     }
 
@@ -35,7 +35,7 @@ export function useOrganisation() {
         }
       } catch (err) {
         if (!cancelled) {
-          setError(err instanceof Error ? err.message : "Failed to load organisation");
+          setError(err instanceof Error ? err.message : 'Failed to load organisation');
         }
       } finally {
         if (!cancelled) {
@@ -53,7 +53,7 @@ export function useOrganisation() {
 
   return {
     organisation,
-    isLoading: status === "authenticated" ? isLoading : false,
+    isLoading: status === 'authenticated' ? isLoading : false,
     error,
     refresh,
   };

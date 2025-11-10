@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { User, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { User, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Form,
   FormControl,
@@ -14,25 +14,25 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Progress } from "@/components/ui/progress";
+} from '@/components/ui/form';
+import { Progress } from '@/components/ui/progress';
 
 const adminUserSchema = z
   .object({
-    firstName: z.string().min(2, { message: "First name must be at least 2 characters" }),
-    lastName: z.string().min(2, { message: "Last name must be at least 2 characters" }),
-    email: z.string().email({ message: "Please enter a valid email address" }),
+    firstName: z.string().min(2, { message: 'First name must be at least 2 characters' }),
+    lastName: z.string().min(2, { message: 'Last name must be at least 2 characters' }),
+    email: z.string().email({ message: 'Please enter a valid email address' }),
     password: z
       .string()
-      .min(8, { message: "Password must be at least 8 characters" })
-      .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
-      .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
-      .regex(/[0-9]/, { message: "Password must contain at least one number" }),
+      .min(8, { message: 'Password must be at least 8 characters' })
+      .regex(/[A-Z]/, { message: 'Password must contain at least one uppercase letter' })
+      .regex(/[a-z]/, { message: 'Password must contain at least one lowercase letter' })
+      .regex(/[0-9]/, { message: 'Password must contain at least one number' }),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
   });
 
 export type AdminUserFormValues = z.infer<typeof adminUserSchema>;
@@ -56,16 +56,16 @@ export function AdminUserStep({
   const form = useForm<AdminUserFormValues>({
     resolver: zodResolver(adminUserSchema),
     defaultValues: defaultValues || {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
     },
   });
 
   // eslint-disable-next-line react-hooks/incompatible-library
-  const password = form.watch("password");
+  const password = form.watch('password');
 
   // Calculate password strength
   const calculatePasswordStrength = (pwd: string): number => {
@@ -78,18 +78,18 @@ export function AdminUserStep({
     return Math.min(strength, 100);
   };
 
-  const passwordStrength = calculatePasswordStrength(password || "");
+  const passwordStrength = calculatePasswordStrength(password || '');
 
   const getStrengthColor = (strength: number): string => {
-    if (strength < 40) return "bg-red-500";
-    if (strength < 70) return "bg-yellow-500";
-    return "bg-green-500";
+    if (strength < 40) return 'bg-red-500';
+    if (strength < 70) return 'bg-yellow-500';
+    return 'bg-green-500';
   };
 
   const getStrengthLabel = (strength: number): string => {
-    if (strength < 40) return "Weak";
-    if (strength < 70) return "Medium";
-    return "Strong";
+    if (strength < 40) return 'Weak';
+    if (strength < 70) return 'Medium';
+    return 'Strong';
   };
 
   function onSubmit(data: AdminUserFormValues) {
@@ -179,7 +179,7 @@ export function AdminUserStep({
                     <Lock className="absolute left-3 top-3 size-4 text-muted-foreground" />
                     <Input
                       placeholder="Create a strong password"
-                      type={showPassword ? "text" : "password"}
+                      type={showPassword ? 'text' : 'password'}
                       className="pl-10 pr-10"
                       {...field}
                     />
@@ -199,10 +199,10 @@ export function AdminUserStep({
                       <span
                         className={
                           passwordStrength >= 70
-                            ? "text-green-600"
+                            ? 'text-green-600'
                             : passwordStrength >= 40
-                              ? "text-yellow-600"
-                              : "text-red-600"
+                              ? 'text-yellow-600'
+                              : 'text-red-600'
                         }
                       >
                         {getStrengthLabel(passwordStrength)}
@@ -233,7 +233,7 @@ export function AdminUserStep({
                     <Lock className="absolute left-3 top-3 size-4 text-muted-foreground" />
                     <Input
                       placeholder="Re-enter your password"
-                      type={showConfirmPassword ? "text" : "password"}
+                      type={showConfirmPassword ? 'text' : 'password'}
                       className="pl-10 pr-10"
                       {...field}
                     />
@@ -261,7 +261,7 @@ export function AdminUserStep({
                 Back
               </Button>
             )}
-            <Button type="submit" className={!onBack ? "ml-auto" : ""}>
+            <Button type="submit" className={!onBack ? 'ml-auto' : ''}>
               Continue
             </Button>
           </div>

@@ -1,12 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import Link from "next/link";
-import { Building2, Lock, Mail } from "lucide-react";
+import { useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import Link from 'next/link';
+import { Building2, Lock, Mail } from 'lucide-react';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -14,9 +14,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Form,
   FormControl,
@@ -24,14 +24,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { toast } from "sonner";
-import { useAuth } from "@/hooks/use-auth";
-import { getApiErrorMessage } from "@/lib/http";
+} from '@/components/ui/form';
+import { toast } from 'sonner';
+import { useAuth } from '@/hooks/use-auth';
+import { getApiErrorMessage } from '@/lib/http';
 
 const loginSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email address" }),
-  password: z.string().min(8, { message: "Password must be at least 8 characters" }),
+  email: z.string().email({ message: 'Please enter a valid email address' }),
+  password: z.string().min(8, { message: 'Password must be at least 8 characters' }),
   rememberMe: z.boolean(),
 });
 
@@ -42,15 +42,15 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const { login, status } = useAuth();
-  const isCheckingSession = status === "loading";
-  const isAuthenticated = status === "authenticated";
+  const isCheckingSession = status === 'loading';
+  const isAuthenticated = status === 'authenticated';
 
   const returnTo = useMemo(() => {
     const queryParam = router.query.returnTo;
-    if (typeof queryParam === "string" && queryParam.startsWith("/")) {
+    if (typeof queryParam === 'string' && queryParam.startsWith('/')) {
       return queryParam;
     }
-    return "/";
+    return '/';
   }, [router.query.returnTo]);
 
   useEffect(() => {
@@ -62,8 +62,8 @@ export default function LoginPage() {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
       rememberMe: false,
     },
   });
@@ -74,14 +74,14 @@ export default function LoginPage() {
 
     try {
       await login({ email: data.email, password: data.password });
-      toast.success("Login successful!", {
-        description: "Welcome back to the Admin Portal",
+      toast.success('Login successful!', {
+        description: 'Welcome back to the Admin Portal',
       });
       void router.replace(returnTo);
     } catch (error) {
-      const message = getApiErrorMessage(error, "Invalid email or password. Please try again.");
+      const message = getApiErrorMessage(error, 'Invalid email or password. Please try again.');
       setFormError(message);
-      toast.error("Login failed", {
+      toast.error('Login failed', {
         description: message,
       });
     } finally {
@@ -188,10 +188,10 @@ export default function LoginPage() {
 
                 <Button type="submit" className="w-full" disabled={isLoading || isCheckingSession}>
                   {isLoading
-                    ? "Signing in..."
+                    ? 'Signing in...'
                     : isCheckingSession
-                      ? "Checking session..."
-                      : "Sign in"}
+                      ? 'Checking session...'
+                      : 'Sign in'}
                 </Button>
               </form>
             </Form>
@@ -208,7 +208,7 @@ export default function LoginPage() {
             <Button
               variant="outline"
               className="w-full"
-              onClick={() => router.push("/onboarding")}
+              onClick={() => router.push('/onboarding')}
               disabled={isLoading || isCheckingSession}
             >
               Create an organization
@@ -217,11 +217,11 @@ export default function LoginPage() {
         </Card>
 
         <p className="mt-8 text-center text-xs text-muted-foreground">
-          By continuing, you agree to our{" "}
+          By continuing, you agree to our{' '}
           <Link href="/terms" className="underline hover:text-foreground">
             Terms of Service
-          </Link>{" "}
-          and{" "}
+          </Link>{' '}
+          and{' '}
           <Link href="/privacy" className="underline hover:text-foreground">
             Privacy Policy
           </Link>

@@ -124,9 +124,9 @@ The codebase has a sophisticated IAM type system in `src/types/iam.ts`:
 All imports use `@/` alias which maps to `src/`:
 
 ```typescript
-import { Button } from "@/components/ui/button";
-import type { IAMUser } from "@/types/iam";
-import { buildPermissionKey } from "@/lib/iam";
+import { Button } from '@/components/ui/button';
+import type { IAMUser } from '@/types/iam';
+import { buildPermissionKey } from '@/lib/iam';
 ```
 
 ## Testing Guidelines
@@ -157,7 +157,7 @@ React Hook Form's `watch()` API triggers a React Compiler warning. Suppress with
 
 ```typescript
 // eslint-disable-next-line react-hooks/incompatible-library
-const password = form.watch("password");
+const password = form.watch('password');
 ```
 
 ## Common Patterns
@@ -166,7 +166,7 @@ const password = form.watch("password");
 
 ```typescript
 const schema = z.object({
-  email: z.string().email({ message: "Custom error message" }),
+  email: z.string().email({ message: 'Custom error message' }),
   password: z.string().min(8),
   // Don't use .default() as it makes fields optional - causes type mismatches
   rememberMe: z.boolean(), // ✓ Correct
@@ -177,7 +177,7 @@ type FormValues = z.infer<typeof schema>;
 
 const form = useForm<FormValues>({
   resolver: zodResolver(schema),
-  defaultValues: { email: "", password: "", rememberMe: false },
+  defaultValues: { email: '', password: '', rememberMe: false },
 });
 ```
 

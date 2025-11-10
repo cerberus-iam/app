@@ -1,9 +1,9 @@
-import { useRouter } from "next/router";
-import { CheckCircle2, Building2, User, ArrowRight } from "lucide-react";
+import { useRouter } from 'next/router';
+import { CheckCircle2, Building2, User, ArrowRight } from 'lucide-react';
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import type { OnboardingData } from "@/types/auth";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import type { OnboardingData } from '@/types/auth';
 
 interface CompletionStepProps {
   data: OnboardingData;
@@ -15,7 +15,7 @@ export function CompletionStep({ data, onBack }: CompletionStepProps) {
 
   const handleComplete = () => {
     // TODO: Navigate to dashboard or login
-    router.push("/login");
+    router.push('/login');
   };
 
   return (
@@ -74,7 +74,7 @@ export function CompletionStep({ data, onBack }: CompletionStepProps) {
                 <h3 className="font-semibold">Admin Account</h3>
                 <div className="space-y-1 text-sm text-muted-foreground">
                   <p>
-                    <span className="font-medium">Name:</span> {data.admin.firstName}{" "}
+                    <span className="font-medium">Name:</span> {data.admin.firstName}{' '}
                     {data.admin.lastName}
                   </p>
                   <p>
@@ -118,7 +118,7 @@ export function CompletionStep({ data, onBack }: CompletionStepProps) {
             Back
           </Button>
         )}
-        <Button onClick={handleComplete} className={!onBack ? "ml-auto" : ""}>
+        <Button onClick={handleComplete} className={!onBack ? 'ml-auto' : ''}>
           Go to Login
           <ArrowRight className="ml-2 size-4" />
         </Button>

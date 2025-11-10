@@ -1,7 +1,7 @@
 ---
 name: "\U0001F680 Feature Request"
 about: Suggest an idea to improve the Admin Web Portal
-labels: ["enhancement", "needs-triage"]
+labels: ['enhancement', 'needs-triage']
 ---
 
 ## Summary

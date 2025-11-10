@@ -1,11 +1,11 @@
-import { type ReactElement } from "react";
-import { Save } from "lucide-react";
+import { type ReactElement } from 'react';
+import { Save } from 'lucide-react';
 
-import type { NextPageWithLayout } from "@/types/page";
-import { AppLayout } from "@/components/layout/app-layout";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Switch } from "@/components/ui/switch";
+import type { NextPageWithLayout } from '@/types/page';
+import { AppLayout } from '@/components/layout/app-layout';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Switch } from '@/components/ui/switch';
 
 const PreferencesPage: NextPageWithLayout = () => {
   return (
@@ -48,7 +48,7 @@ PreferencesPage.getLayout = function getLayout(page: ReactElement) {
     <AppLayout
       title="Admin Preferences"
       description="Configure your personal experience and notification rules."
-      breadcrumbs={[{ label: "Organization", href: "/iam/tenants" }, { label: "Settings" }]}
+      breadcrumbs={[{ label: 'Organization', href: '/iam/tenants' }, { label: 'Settings' }]}
       actions={
         <Button className="gap-2">
           <Save className="size-4" />

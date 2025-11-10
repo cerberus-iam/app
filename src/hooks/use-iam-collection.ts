@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from 'react';
 
-import { getApiErrorMessage } from "@/lib/http";
+import { getApiErrorMessage } from '@/lib/http';
 
 type CollectionResponse<T> = {
   data: T[];
@@ -40,7 +40,7 @@ export function useIamCollection<T>(
         setTotal(response.total ?? response.data.length);
       } catch (err) {
         if (cancelled) return;
-        setError(getApiErrorMessage(err, "Failed to load data"));
+        setError(getApiErrorMessage(err, 'Failed to load data'));
       } finally {
         if (!cancelled) {
           setIsLoading(false);

@@ -3,10 +3,10 @@ name: CI
 on:
   pull_request:
     paths-ignore:
-      - ".github/ISSUE_TEMPLATE/**"
-      - ".github/pull_request_template.md"
-      - "docs/**"
-      - "**/*.md"
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/pull_request_template.md'
+      - 'docs/**'
+      - '**/*.md'
   push:
     branches:
       - main
@@ -15,10 +15,10 @@ on:
       - hotfix/**
       - release/**
     paths-ignore:
-      - ".github/ISSUE_TEMPLATE/**"
-      - ".github/pull_request_template.md"
-      - "docs/**"
-      - "**/*.md"
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/pull_request_template.md'
+      - 'docs/**'
+      - '**/*.md'
   workflow_dispatch:
 
 concurrency:
@@ -29,8 +29,8 @@ permissions:
   contents: read
 
 env:
-  NODE_VERSION: "20"
-  NODE_OPTIONS: "--max_old_space_size=4096"
+  NODE_VERSION: '20'
+  NODE_OPTIONS: '--max_old_space_size=4096'
   PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/pw-browsers
 
 jobs:
@@ -94,8 +94,8 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - "18.x"
-          - "20.x"
+          - '18.x'
+          - '20.x'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

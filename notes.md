@@ -88,7 +88,7 @@ const refresh = useCallback(() => {
 ```ts
 // With React Query
 const { data, isLoading, error, refetch } = useQuery({
-  queryKey: ["iam-users"],
+  queryKey: ['iam-users'],
   queryFn: () => iamApi.admin.users.list(),
   staleTime: 30_000,
   refetchOnWindowFocus: true,
@@ -217,7 +217,7 @@ Great foundation for an MVP or internal tool.
 
    // With this:
    const { data, isLoading, refetch } = useQuery({
-     queryKey: ["iam-users"],
+     queryKey: ['iam-users'],
      queryFn: () => iamApi.admin.users.list(),
    });
    ```

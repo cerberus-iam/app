@@ -1,12 +1,12 @@
-import { type ReactElement } from "react";
-import { Building2 } from "lucide-react";
+import { type ReactElement } from 'react';
+import { Building2 } from 'lucide-react';
 
-import type { NextPageWithLayout } from "@/types/page";
-import { AppLayout } from "@/components/layout/app-layout";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useOrganisation } from "@/hooks/use-organisation";
-import { Button } from "@/components/ui/button";
+import type { NextPageWithLayout } from '@/types/page';
+import { AppLayout } from '@/components/layout/app-layout';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useOrganisation } from '@/hooks/use-organisation';
+import { Button } from '@/components/ui/button';
 
 const TenantsPage: NextPageWithLayout = () => {
   const { organisation, isLoading, error, refresh } = useOrganisation();
@@ -33,8 +33,8 @@ const TenantsPage: NextPageWithLayout = () => {
             <Button variant="outline" size="sm" onClick={() => refresh()} disabled={isLoading}>
               Refresh
             </Button>
-            <Badge variant={organisation?.requireMfa ? "secondary" : "outline"}>
-              {organisation?.requireMfa ? "MFA required" : "MFA optional"}
+            <Badge variant={organisation?.requireMfa ? 'secondary' : 'outline'}>
+              {organisation?.requireMfa ? 'MFA required' : 'MFA optional'}
             </Badge>
           </div>
         </CardHeader>
@@ -53,20 +53,20 @@ const TenantsPage: NextPageWithLayout = () => {
               </div>
               <div className="rounded-lg border p-4">
                 <p className="text-xs uppercase text-muted-foreground">Contact email</p>
-                <p className="font-medium">{organisation.email ?? "—"}</p>
+                <p className="font-medium">{organisation.email ?? '—'}</p>
               </div>
               <div className="rounded-lg border p-4">
                 <p className="text-xs uppercase text-muted-foreground">Allowed origins</p>
                 <p className="font-medium">
                   {(organisation.allowedOrigins?.length ?? 0) > 0
-                    ? organisation.allowedOrigins?.join(", ")
-                    : "None configured"}
+                    ? organisation.allowedOrigins?.join(', ')
+                    : 'None configured'}
                 </p>
               </div>
               <div className="rounded-lg border p-4">
                 <p className="text-xs uppercase text-muted-foreground">Session lifetime</p>
                 <p className="font-medium">
-                  {sessionLifetimeDays ? `${sessionLifetimeDays} days` : "Default"}
+                  {sessionLifetimeDays ? `${sessionLifetimeDays} days` : 'Default'}
                 </p>
               </div>
             </div>
@@ -82,7 +82,7 @@ TenantsPage.getLayout = function getLayout(page: ReactElement) {
     <AppLayout
       title="Tenant Management"
       description="Monitor tenant health, compliance posture, and lifecycle events."
-      breadcrumbs={[{ label: "Organization", href: "/iam/tenants" }, { label: "Tenants" }]}
+      breadcrumbs={[{ label: 'Organization', href: '/iam/tenants' }, { label: 'Tenants' }]}
       actions={<Badge variant="secondary">API integration pending</Badge>}
     >
       {page}

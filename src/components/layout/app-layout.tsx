@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { type ReactNode } from "react";
+import { type ReactNode } from 'react';
 
-import { RequireAuth } from "@/components/auth/require-auth";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { RequireAuth } from '@/components/auth/require-auth';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 
-import { AppHeader, type AppHeaderProps } from "./app-header";
-import { AppSidebar } from "./app-sidebar";
+import { AppHeader, type AppHeaderProps } from './app-header';
+import { AppSidebar } from './app-sidebar';
 
 type AppLayoutProps = AppHeaderProps & {
   children: ReactNode;

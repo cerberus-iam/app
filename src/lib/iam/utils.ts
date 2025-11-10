@@ -1,4 +1,4 @@
-import { formatDistanceToNowStrict } from "date-fns";
+import { formatDistanceToNowStrict } from 'date-fns';
 
 import {
   type IAMAuditEvent,
@@ -8,7 +8,7 @@ import {
   type IAMRole,
   type IAMTenant,
   type IAMUser,
-} from "@/types/iam";
+} from '@/types/iam';
 
 export function buildPermissionKey(
   resource: IAMPermissionResource,
@@ -22,7 +22,7 @@ export function resolveRolePermissions(role: IAMRole): Set<IAMPermissionKey> {
 }
 
 export function resolveUserPermissions(
-  user: Pick<IAMUser, "roles">,
+  user: Pick<IAMUser, 'roles'>,
   roles: IAMRole[],
 ): Set<IAMPermissionKey> {
   const roleMap = new Map(roles.map((role) => [role.id, role.permissions]));
@@ -76,13 +76,13 @@ export function groupAuditEventsBySeverity(events: IAMAuditEvent[]) {
       acc[event.severity] = (acc[event.severity] ?? 0) + 1;
       return acc;
     },
-    {} as Record<IAMAuditEvent["severity"], number>,
+    {} as Record<IAMAuditEvent['severity'], number>,
   );
 }
 
 export function formatRelativeTime(timestamp: string | null) {
   if (!timestamp) {
-    return "Never";
+    return 'Never';
   }
   return formatDistanceToNowStrict(new Date(timestamp), {
     addSuffix: true,
