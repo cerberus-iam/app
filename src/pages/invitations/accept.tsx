@@ -21,8 +21,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 import { useAuth } from '@/hooks/use-auth';
+import { getApiErrorMessage } from '@/lib/http';
 import { iamApi } from '@/lib/iam/api';
-import type { NextPageWithLayout } from '@/types';
+import type { NextPageWithLayout } from '@/types/page';
 
 const acceptInvitationSchema = z
   .object({
@@ -106,24 +107,24 @@ const AcceptInvitationPage: NextPageWithLayout = () => {
 
       toast.success('Account created successfully!');
 
-      // Auto-login after accepting invitation
       if (email && typeof email === 'string') {
         try {
           await login({
             email,
             password: data.password,
           });
-
           router.push('/');
-        } catch (error: any) {
+        } catch (error: unknown) {
           console.error('Auto-login failed:', error);
           router.push('/auth/login');
         }
       } else {
         router.push('/auth/login');
       }
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to accept invitation. The link may have expired.');
+    } catch (error: unknown) {
+      toast.error(
+        getApiErrorMessage(error, 'Failed to accept invitation. The link may have expired.'),
+      );
     } finally {
       setIsLoading(false);
     }

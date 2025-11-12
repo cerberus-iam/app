@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { IconArrowLeft, IconUserPlus, IconEye, IconEyeOff } from '@tabler/icons-react';
+import { ArrowLeft, Eye, EyeOff, UserPlus } from 'lucide-react';
+import { toast } from 'sonner';
 
-import { AppSidebar } from '@/components/app-sidebar';
-import { SiteHeader } from '@/components/site-header';
-import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+import { AppLayout } from '@/components/layout/app-layout';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Form,
   FormControl,
@@ -20,18 +21,11 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { iamApi } from '@/lib/iam/api';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useIamRoles } from '@/hooks/use-iam-data';
-import type { NextPageWithLayout } from '@/types/page';
 import { getApiErrorMessage } from '@/lib/http';
+import { iamApi } from '@/lib/iam/api';
+import type { NextPageWithLayout } from '@/types/page';
 
 const createUserSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
@@ -43,7 +37,7 @@ const createUserSchema = z.object({
     .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
     .regex(/[0-9]/, 'Password must contain at least one number'),
-  sendInvitation: z.boolean().default(false),
+  sendInvitation: z.boolean(),
   roleIds: z.array(z.string()).optional(),
 });
 
@@ -51,9 +45,9 @@ type CreateUserFormData = z.infer<typeof createUserSchema>;
 
 const NewUserPage: NextPageWithLayout = () => {
   const router = useRouter();
+  const { data: roles, isLoading: rolesLoading } = useIamRoles();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { data: roles, isLoading: rolesLoading } = useIamRoles();
 
   const form = useForm<CreateUserFormData>({
     resolver: zodResolver(createUserSchema),
@@ -67,11 +61,26 @@ const NewUserPage: NextPageWithLayout = () => {
     },
   });
 
-  const sendInvitation = form.watch('sendInvitation');
+  const sendInvitation = useWatch({ control: form.control, name: 'sendInvitation' }) ?? false;
+  const password = useWatch({ control: form.control, name: 'password' }) ?? '';
+
+  const passwordStrength = (() => {
+    if (!password) return null;
+    let strength = 0;
+    if (password.length >= 8) strength++;
+    if (password.length >= 12) strength++;
+    if (/[A-Z]/.test(password)) strength++;
+    if (/[a-z]/.test(password)) strength++;
+    if (/[0-9]/.test(password)) strength++;
+    if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+    if (strength <= 2) return { label: 'Weak', bar: 'w-1/3 bg-red-500' } as const;
+    if (strength <= 4) return { label: 'Medium', bar: 'w-2/3 bg-yellow-500' } as const;
+    return { label: 'Strong', bar: 'w-full bg-green-500' } as const;
+  })();
 
   const onSubmit = async (data: CreateUserFormData) => {
     setIsSubmitting(true);
-
     try {
       const payload = {
         firstName: data.firstName,
@@ -82,262 +91,245 @@ const NewUserPage: NextPageWithLayout = () => {
       };
 
       const newUser = await iamApi.admin.users.create(payload);
-
+      toast.success('User created');
       router.push(`/iam/users/${newUser.id}`);
-    } catch (err) {
-      alert(getApiErrorMessage(err, 'Failed to create user'));
+    } catch (error) {
+      toast.error(getApiErrorMessage(error, 'Failed to create user'));
       setIsSubmitting(false);
     }
   };
 
-  const passwordStrength = (password: string) => {
-    let strength = 0;
-    if (password.length >= 8) strength++;
-    if (password.length >= 12) strength++;
-    if (/[A-Z]/.test(password)) strength++;
-    if (/[a-z]/.test(password)) strength++;
-    if (/[0-9]/.test(password)) strength++;
-    if (/[^A-Za-z0-9]/.test(password)) strength++;
-
-    if (strength <= 2) return { label: 'Weak', color: 'bg-red-500', width: '33%' };
-    if (strength <= 4) return { label: 'Medium', color: 'bg-yellow-500', width: '66%' };
-    return { label: 'Strong', color: 'bg-green-500', width: '100%' };
+  const handleBack = () => {
+    router.push('/iam/users');
   };
 
-  const currentPassword = form.watch('password');
-  const strength = currentPassword ? passwordStrength(currentPassword) : null;
-
   return (
-    <SidebarProvider
-      style={
-        {
-          '--sidebar-width': 'calc(var(--spacing) * 72)',
-          '--header-height': 'calc(var(--spacing) * 12)',
-        } as React.CSSProperties
-      }
-    >
-      <AppSidebar variant="inset" />
-      <SidebarInset>
-        <SiteHeader />
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-6 md:p-6">
-          <div className="space-y-1">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => router.push('/iam/users')}
-              className="mb-2"
-            >
-              <IconArrowLeft className="mr-2 size-4" />
-              Back to Users
-            </Button>
-            <h1 className="text-3xl font-bold tracking-tight">Create New User</h1>
-            <p className="text-muted-foreground">Add a new user account to your organization</p>
-          </div>
+    <div className="flex flex-1 flex-col gap-6">
+      <div className="flex flex-col gap-2">
+        <Button variant="ghost" size="sm" onClick={handleBack} className="w-fit">
+          <ArrowLeft className="mr-2 size-4" />
+          Back to users
+        </Button>
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Create user</h1>
+          <p className="text-sm text-muted-foreground">
+            Provision an account manually or send an invitation to set credentials.
+          </p>
+        </div>
+      </div>
 
-          <div className="grid gap-4 md:grid-cols-3">
-            <div className="md:col-span-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle>User Details</CardTitle>
-                  <CardDescription>Enter the basic information for the new user</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                      <div className="grid gap-4 md:grid-cols-2">
-                        <FormField
-                          control={form.control}
-                          name="firstName"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>First Name</FormLabel>
-                              <FormControl>
-                                <Input placeholder="John" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={form.control}
-                          name="lastName"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Last Name</FormLabel>
-                              <FormControl>
-                                <Input placeholder="Doe" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-
-                      <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Email Address</FormLabel>
-                            <FormControl>
-                              <Input type="email" placeholder="john.doe@example.com" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="sendInvitation"
-                        render={({ field }) => (
-                          <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                            <FormControl>
-                              <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                            </FormControl>
-                            <div className="space-y-1 leading-none">
-                              <FormLabel>Send Invitation Email</FormLabel>
-                              <FormDescription>
-                                User will receive an invitation link to set their own password. If
-                                unchecked, you must set a password below.
-                              </FormDescription>
-                            </div>
-                          </FormItem>
-                        )}
-                      />
-
-                      {!sendInvitation && (
-                        <FormField
-                          control={form.control}
-                          name="password"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Password</FormLabel>
-                              <FormControl>
-                                <div className="relative">
-                                  <Input
-                                    type={showPassword ? 'text' : 'password'}
-                                    placeholder="Enter password"
-                                    {...field}
-                                  />
-                                  <Button
-                                    type="button"
-                                    variant="ghost"
-                                    size="sm"
-                                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                  >
-                                    {showPassword ? (
-                                      <IconEyeOff className="size-4" />
-                                    ) : (
-                                      <IconEye className="size-4" />
-                                    )}
-                                  </Button>
-                                </div>
-                              </FormControl>
-                              {strength && (
-                                <div className="space-y-1">
-                                  <div className="h-2 w-full overflow-hidden rounded-full bg-gray-200">
-                                    <div
-                                      className={`h-full transition-all ${strength.color}`}
-                                      style={{ width: strength.width }}
-                                    />
-                                  </div>
-                                  <p className="text-xs text-muted-foreground">
-                                    Password strength: {strength.label}
-                                  </p>
-                                </div>
-                              )}
-                              <FormDescription>
-                                Must be at least 8 characters with uppercase, lowercase, and numbers
-                              </FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      )}
-
-                      <div className="flex gap-2">
-                        <Button type="submit" disabled={isSubmitting}>
-                          <IconUserPlus className="mr-2 size-4" />
-                          {isSubmitting ? 'Creating...' : 'Create User'}
-                        </Button>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => router.push('/iam/users')}
-                          disabled={isSubmitting}
-                        >
-                          Cancel
-                        </Button>
-                      </div>
-                    </form>
-                  </Form>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Role Assignment</CardTitle>
-                  <CardDescription>Assign roles to the new user</CardDescription>
-                </CardHeader>
-                <CardContent>
+      <div className="grid gap-6 xl:grid-cols-[2fr,1fr]">
+        <Card>
+          <CardHeader>
+            <CardTitle>Account details</CardTitle>
+            <CardDescription>Collect the information needed to create the user.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <div className="grid gap-4 md:grid-cols-2">
                   <FormField
                     control={form.control}
-                    name="roleIds"
+                    name="firstName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Roles</FormLabel>
-                        <div className="space-y-2">
-                          {rolesLoading ? (
-                            <p className="text-sm text-muted-foreground">Loading roles...</p>
-                          ) : roles && roles.length > 0 ? (
-                            roles.map((role) => (
-                              <div key={role.id} className="flex items-center space-x-2">
-                                <Checkbox
-                                  id={role.id}
-                                  checked={field.value?.includes(role.id)}
-                                  onCheckedChange={(checked) => {
-                                    const currentValues = field.value || [];
-                                    if (checked) {
-                                      field.onChange([...currentValues, role.id]);
-                                    } else {
-                                      field.onChange(currentValues.filter((id) => id !== role.id));
-                                    }
-                                  }}
-                                />
-                                <label
-                                  htmlFor={role.id}
-                                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                >
-                                  {role.name}
-                                  {role.description && (
-                                    <span className="block text-xs text-muted-foreground">
-                                      {role.description}
-                                    </span>
-                                  )}
-                                </label>
-                              </div>
-                            ))
-                          ) : (
-                            <p className="text-sm text-muted-foreground">No roles available</p>
-                          )}
-                        </div>
-                        <FormDescription>Select one or more roles for this user</FormDescription>
+                        <FormLabel>First name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Ada" {...field} />
+                        </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
+                  <FormField
+                    control={form.control}
+                    name="lastName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Last name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Lovelace" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input type="email" placeholder="ada.lovelace@example.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="sendInvitation"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                      <FormControl>
+                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                      </FormControl>
+                      <div className="space-y-1">
+                        <FormLabel>Send invitation email</FormLabel>
+                        <FormDescription>
+                          The invitee will receive a secure token to set their password and verify
+                          their account.
+                        </FormDescription>
+                      </div>
+                    </FormItem>
+                  )}
+                />
+
+                {!sendInvitation && (
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Password</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Input
+                              type={showPassword ? 'text' : 'password'}
+                              placeholder="Set an initial password"
+                              {...field}
+                            />
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              className="absolute right-1 top-1/2 size-7 -translate-y-1/2"
+                              onClick={() => setShowPassword((value) => !value)}
+                            >
+                              {showPassword ? (
+                                <EyeOff className="size-4" />
+                              ) : (
+                                <Eye className="size-4" />
+                              )}
+                            </Button>
+                          </div>
+                        </FormControl>
+                        {passwordStrength && (
+                          <div className="space-y-1">
+                            <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                              <span className={`block h-full ${passwordStrength.bar}`} />
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                              Password strength: {passwordStrength.label}
+                            </p>
+                          </div>
+                        )}
+                        <FormDescription>
+                          Must include 8+ characters with upper, lower, and numeric symbols.
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+
+                <div className="flex items-center gap-2">
+                  <Button type="submit" disabled={isSubmitting}>
+                    <UserPlus className="mr-2 size-4" />
+                    {isSubmitting ? 'Creating…' : 'Create user'}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleBack}
+                    disabled={isSubmitting}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Assign roles</CardTitle>
+            <CardDescription>Select the permissions granted upon creation.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {rolesLoading ? (
+              <div className="space-y-2">
+                {Array.from({ length: 3 }).map((_, index) => (
+                  <Skeleton key={index} className="h-14 w-full" />
+                ))}
+              </div>
+            ) : roles && roles.length > 0 ? (
+              <FormField
+                control={form.control}
+                name="roleIds"
+                render={({ field }) => (
+                  <div className="space-y-2">
+                    {roles.map((role) => {
+                      const checked = field.value?.includes(role.id) ?? false;
+                      return (
+                        <label
+                          key={role.id}
+                          className="flex items-start gap-3 rounded-lg border p-3"
+                        >
+                          <Checkbox
+                            checked={checked}
+                            onCheckedChange={(value) => {
+                              const selected = new Set(field.value ?? []);
+                              if (value) {
+                                selected.add(role.id);
+                              } else {
+                                selected.delete(role.id);
+                              }
+                              field.onChange(Array.from(selected));
+                            }}
+                          />
+                          <span className="space-y-1">
+                            <span className="block text-sm font-medium">{role.name}</span>
+                            {role.description ? (
+                              <span className="block text-xs text-muted-foreground">
+                                {role.description}
+                              </span>
+                            ) : null}
+                          </span>
+                          {role.isDefault ? (
+                            <Badge variant="outline" className="ml-auto">
+                              Default
+                            </Badge>
+                          ) : null}
+                        </label>
+                      );
+                    })}
+                  </div>
+                )}
+              />
+            ) : (
+              <p className="text-sm text-muted-foreground">No roles available yet.</p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   );
 };
+
+NewUserPage.getLayout = (page) => (
+  <AppLayout
+    title="Users"
+    description="Manage user accounts and permissions"
+    breadcrumbs={[{ label: 'IAM' }, { label: 'Users', href: '/iam/users' }, { label: 'New user' }]}
+  >
+    {page}
+  </AppLayout>
+);
 
 export default NewUserPage;
