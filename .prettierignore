@@ -1,7 +1,0 @@
-.next
-out
-build
-node_modules
-coverage
-dist
-package-lock.json
