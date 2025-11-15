@@ -20,7 +20,7 @@ const customJestConfig = {
     '!src/**/*.stories.{js,jsx,ts,tsx}',
     '!src/**/__tests__/**',
   ],
-  coverageThresholds: {
+  coverageThreshold: {
     global: {
       branches: 70,
       functions: 70,
@@ -28,6 +28,8 @@ const customJestConfig = {
       statements: 70,
     },
   },
+  // Exclude e2e tests from Jest (they should run with Playwright)
+  testPathIgnorePatterns: ['/node_modules/', '/.next/', '/e2e/'],
 }
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

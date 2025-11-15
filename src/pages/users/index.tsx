@@ -1,12 +1,11 @@
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
+import { columns } from '@/components/users/columns'
+import { DataTable } from '@/components/users/data-table'
 import { AppLayout } from '@/layouts/app'
 import { createServerApiClient } from '@/lib/auth/client-factory'
 import { requireAuth } from '@/lib/auth/redirects'
 import type { User } from '@/types/iam'
-
-import { columns } from './columns'
-import { DataTable } from './data-table'
 
 interface UsersListResponse {
   data: User[]
