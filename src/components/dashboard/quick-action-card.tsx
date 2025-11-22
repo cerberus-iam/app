@@ -20,7 +20,7 @@ export function QuickActionCard({
   onAction,
 }: QuickActionCardProps) {
   return (
-    <Card className="hover:bg-accent/50 transition-colors">
+    <Card className="hover:bg-accent/50 shadow-none transition-colors">
       <CardHeader className="pb-3">
         <div className="flex items-center gap-2">
           <div className="bg-primary/10 rounded-lg p-2">

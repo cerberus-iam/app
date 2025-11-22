@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
-import { fetchFromAPI } from '@/lib/api/client-side';
+import { apiClient } from '@/lib/api/client';
 import type { Permission, Role } from '@/lib/api/roles';
 
 interface ManagePermissionsDialogProps {
@@ -65,22 +65,38 @@ export function ManagePermissionsDialog({
         role.id
       );
 
-      // Load all permissions via proxy
-      const permissionsData = await fetchFromAPI<{
+      // Load all permissions
+      const permissionsResult = await apiClient.request<{
         data: Permission[];
-      }>('/v1/admin/permissions?limit=100');
+      }>('/v1/admin/permissions', {
+        method: 'GET',
+        query: { limit: 100 },
+      });
+
+      if (!permissionsResult.ok) {
+        throw new Error('Failed to load permissions');
+      }
       console.log('[ManagePermissions] Permissions result: success');
 
-      // Load role details with current permissions via proxy
-      const roleData = await fetchFromAPI<Role>(`/v1/admin/roles/${role.id}`);
+      // Load role details with current permissions
+      const roleResult = await apiClient.request<Role>(
+        `/v1/admin/roles/${role.id}`,
+        {
+          method: 'GET',
+        }
+      );
+
+      if (!roleResult.ok) {
+        throw new Error('Failed to load role details');
+      }
       console.log('[ManagePermissions] Role result: success');
 
-      setAllPermissions(permissionsData.data || []);
-      setRoleDetails(roleData);
+      setAllPermissions(permissionsResult.value.data || []);
+      setRoleDetails(roleResult.value);
 
       // Initialize selected permissions
       const currentPermissionIds = new Set(
-        roleData.permissions?.map((p: Permission) => p.id) || []
+        roleResult.value.permissions?.map((p: Permission) => p.id) || []
       );
       setSelectedPermissionIds(currentPermissionIds);
     } catch (err) {
@@ -123,19 +139,19 @@ export function ManagePermissionsDialog({
     const toRemove = [...currentIds].filter((id) => !selectedIds.has(id));
 
     try {
-      // Execute add operations via proxy
+      // Execute add operations
       for (const permissionId of toAdd) {
-        await fetchFromAPI(`/v1/admin/roles/${role.id}/permissions`, {
+        await apiClient.request(`/v1/admin/roles/${role.id}/permissions`, {
           method: 'POST',
-          body: JSON.stringify({ permissionId }),
+          body: { permissionId },
         });
       }
 
-      // Execute remove operations via proxy
+      // Execute remove operations
       for (const permissionId of toRemove) {
-        await fetchFromAPI(`/v1/admin/roles/${role.id}/permissions`, {
+        await apiClient.request(`/v1/admin/roles/${role.id}/permissions`, {
           method: 'DELETE',
-          body: JSON.stringify({ permissionId }),
+          body: { permissionId },
         });
       }
 

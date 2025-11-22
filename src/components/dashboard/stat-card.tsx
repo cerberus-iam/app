@@ -59,7 +59,7 @@ export function StatCard({
   if (href) {
     return (
       <Link href={href} className="block">
-        <Card className="hover:bg-accent/50 group relative cursor-pointer transition-colors">
+        <Card className="hover:bg-accent/50 group relative cursor-pointer shadow-none transition-colors">
           {content}
           <ArrowUpRight className="absolute top-3 right-3 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
         </Card>

@@ -28,7 +28,7 @@ function getActionColor(action: string): 'default' | 'destructive' | 'outline' {
 
 export function RecentActivity({ logs, isLoading }: RecentActivityProps) {
   return (
-    <Card>
+    <Card className="shadow-none">
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <div>
           <CardTitle>Recent Activity</CardTitle>
