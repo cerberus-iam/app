@@ -89,7 +89,7 @@ export const redirectIfAuthenticated = async (
   destination: string = '/dashboard'
 ): Promise<RedirectResponse | { props: Record<string, never> }> => {
   // Only check auth if we have cookies (basic optimization to avoid unnecessary API calls)
-  const hasCookie = context.req.headers.cookie?.includes('cerberus_session');
+  const hasCookie = context.req.headers.cookie?.includes('cerb_sid');
 
   if (!hasCookie) {
     // No session cookie, definitely not authenticated

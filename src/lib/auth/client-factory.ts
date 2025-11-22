@@ -2,7 +2,7 @@ import type { GetServerSidePropsContext, NextApiRequest } from 'next';
 
 import { getDefaultOrgSlug, getIamApiBaseUrl } from '@/config/env';
 import { type ApiClientConfig, IamApiClient } from '@/lib/api/client';
-import { getCookieHeader } from '@/lib/auth/cookies';
+import { getCookieHeader, getCsrfTokenFromCookies } from '@/lib/auth/cookies';
 
 export interface CreateClientOptions {
   defaultOrgSlug?: string;
@@ -36,9 +36,10 @@ export const createServerApiClient = (
   const { req } = context;
   const cookie = getCookieHeader(req.headers);
   const orgSlug = resolveOrgSlug(req.headers as Record<string, unknown>);
+  const csrfToken = getCsrfTokenFromCookies(req.headers);
 
   const config: ApiClientConfig = {
-    ...buildConfig(options),
+    ...buildConfig({ ...options, csrfToken }),
     fetchImpl: async (input, init) => {
       const headers = new Headers(init?.headers ?? {});
       if (cookie && !headers.has('cookie')) {
@@ -62,9 +63,10 @@ export const createApiClientFromRequest = (
 ): IamApiClient => {
   const cookie = getCookieHeader(req.headers);
   const orgSlug = resolveOrgSlug(req.headers as Record<string, unknown>);
+  const csrfToken = getCsrfTokenFromCookies(req.headers);
 
   const config: ApiClientConfig = {
-    ...buildConfig(options),
+    ...buildConfig({ ...options, csrfToken }),
     fetchImpl: async (input, init) => {
       const headers = new Headers(init?.headers ?? {});
       if (cookie && !headers.has('cookie')) {
