@@ -102,40 +102,17 @@ export function ManageUserRolesDialog({
       setIsSubmitting(true);
 
       try {
-        // Determine which roles to add and remove
-        const rolesToAdd = Array.from(selectedRoleIds).filter(
-          (id) => !initialRoleIds.has(id)
-        );
-        const rolesToRemove = Array.from(initialRoleIds).filter(
-          (id) => !selectedRoleIds.has(id)
-        );
+        // Use the new syncRoles endpoint to update all roles in one call
+        const syncResult = await usersApi.syncRoles(user.id, {
+          roleIds: Array.from(selectedRoleIds),
+        });
 
-        // Remove roles first
-        if (rolesToRemove.length > 0) {
-          const removeResult = await usersApi.removeRoles(user.id, {
-            roleIds: rolesToRemove,
+        if (!syncResult.ok) {
+          toast.error('Failed to update roles', {
+            description: getProblemMessage(syncResult.error),
           });
-          if (!removeResult.ok) {
-            toast.error('Failed to remove roles', {
-              description: getProblemMessage(removeResult.error),
-            });
-            setIsSubmitting(false);
-            return;
-          }
-        }
-
-        // Then add new roles
-        if (rolesToAdd.length > 0) {
-          const assignResult = await usersApi.assignRoles(user.id, {
-            roleIds: rolesToAdd,
-          });
-          if (!assignResult.ok) {
-            toast.error('Failed to assign roles', {
-              description: getProblemMessage(assignResult.error),
-            });
-            setIsSubmitting(false);
-            return;
-          }
+          setIsSubmitting(false);
+          return;
         }
 
         toast.success('User roles updated', {
@@ -152,7 +129,7 @@ export function ManageUserRolesDialog({
         setIsSubmitting(false);
       }
     },
-    [user, selectedRoleIds, initialRoleIds, onOpenChange, router]
+    [user, selectedRoleIds, onOpenChange, router]
   );
 
   const hasChanges =

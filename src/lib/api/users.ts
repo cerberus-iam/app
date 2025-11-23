@@ -40,12 +40,18 @@ export interface UpdateUserRequest {
   mfaEnabled?: boolean; // Enable/disable MFA for user
 }
 
-export interface AssignRolesRequest {
-  roleIds: string[];
+// API expects singular roleId for individual operations
+export interface AssignRoleRequest {
+  roleId: string; // Single role ID
 }
 
-export interface RemoveRolesRequest {
-  roleIds: string[];
+export interface RemoveRoleRequest {
+  roleId: string; // Single role ID
+}
+
+// API expects roleIds array for bulk sync operation
+export interface SyncRolesRequest {
+  roleIds: string[]; // Array of role IDs to sync
 }
 
 export class UsersApi {
@@ -89,9 +95,9 @@ export class UsersApi {
     });
   }
 
-  async assignRoles(
+  async assignRole(
     userId: string,
-    data: AssignRolesRequest
+    data: AssignRoleRequest
   ): Promise<Result<User, ApiError>> {
     return this.client.request<User>(`/v1/admin/users/${userId}/roles`, {
       method: 'POST',
@@ -99,12 +105,22 @@ export class UsersApi {
     });
   }
 
-  async removeRoles(
+  async removeRole(
     userId: string,
-    data: RemoveRolesRequest
+    data: RemoveRoleRequest
   ): Promise<Result<void, ApiError>> {
     return this.client.request<void>(`/v1/admin/users/${userId}/roles`, {
       method: 'DELETE',
+      body: data,
+    });
+  }
+
+  async syncRoles(
+    userId: string,
+    data: SyncRolesRequest
+  ): Promise<Result<User, ApiError>> {
+    return this.client.request<User>(`/v1/admin/users/${userId}/roles`, {
+      method: 'PUT',
       body: data,
     });
   }
