@@ -17,7 +17,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AppLayout } from '@/layouts/app';
-import { IamApiClient } from '@/lib/api/client';
+import { apiClient } from '@/lib/api/client';
 import { MeApi, type Session } from '@/lib/api/me';
 import { requireAuth } from '@/lib/auth/redirects';
 
@@ -47,8 +47,7 @@ export default function MyProfilePage({
     setIsSaving(true);
 
     try {
-      const client = new IamApiClient();
-      const meApi = new MeApi(client);
+      const meApi = new MeApi(apiClient);
 
       const result = await meApi.updateProfile({
         firstName: firstName.trim() || null,
@@ -88,8 +87,7 @@ export default function MyProfilePage({
     setSessionError(null);
 
     try {
-      const client = new IamApiClient();
-      const meApi = new MeApi(client);
+      const meApi = new MeApi(apiClient);
       const result = await meApi.listSessions();
 
       if (!result.ok) {
@@ -120,8 +118,7 @@ export default function MyProfilePage({
     setRevokingSessionId(sessionId);
 
     try {
-      const client = new IamApiClient();
-      const meApi = new MeApi(client);
+      const meApi = new MeApi(apiClient);
       const result = await meApi.revokeSession(sessionId);
 
       if (!result.ok) {

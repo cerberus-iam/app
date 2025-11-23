@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { IamApiClient } from '@/lib/api/client';
+import { apiClient } from '@/lib/api/client';
 import { ClientsApi } from '@/lib/api/clients';
 
 interface CreateClientDialogProps {
@@ -53,8 +53,7 @@ export function CreateClientDialog({
     setLoading(true);
 
     try {
-      const client = new IamApiClient();
-      const clientsApi = new ClientsApi(client);
+      const clientsApi = new ClientsApi(apiClient);
 
       const redirectUrisList = formData.redirectUris
         .split('\n')

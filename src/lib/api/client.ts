@@ -188,6 +188,29 @@ const shouldSkipContentType = (body: unknown): boolean => {
   return false;
 };
 
+/**
+ * HTTP client for the Cerberus IAM API.
+ *
+ * @example
+ * ```typescript
+ * // ❌ DON'T: Create new instances in components or pages
+ * const client = new IamApiClient();
+ *
+ * // ✅ DO: Use the singleton instance
+ * import { apiClient } from '@/lib/api/client';
+ * const api = new OrganisationApi(apiClient);
+ * ```
+ *
+ * @remarks
+ * In most cases, you should use the pre-configured singleton `apiClient`
+ * exported from this module. Only use the constructor directly in:
+ * - Server-side factory functions (e.g., `createServerApiClient`)
+ * - Testing utilities that need isolated instances
+ * - Special contexts requiring custom configuration
+ *
+ * The singleton ensures consistent auth, CSRF token management,
+ * multi-tenant headers, and API base URL across the entire application.
+ */
 export class IamApiClient {
   private readonly baseUrl: string;
   private readonly defaultOrgSlug?: string;

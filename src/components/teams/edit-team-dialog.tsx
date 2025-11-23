@@ -15,7 +15,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { IamApiClient } from '@/lib/api/client';
+import { apiClient } from '@/lib/api/client';
 import type { Team } from '@/lib/api/teams';
 import { TeamsApi } from '@/lib/api/teams';
 
@@ -55,8 +55,7 @@ export function EditTeamDialog({
     setLoading(true);
 
     try {
-      const client = new IamApiClient();
-      const teamsApi = new TeamsApi(client);
+      const teamsApi = new TeamsApi(apiClient);
 
       const result = await teamsApi.update(team.id, {
         name: formData.name,

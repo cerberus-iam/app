@@ -15,7 +15,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { IamApiClient } from '@/lib/api/client';
+import { apiClient } from '@/lib/api/client';
 import type { OAuth2Client } from '@/lib/api/clients';
 import { ClientsApi } from '@/lib/api/clients';
 
@@ -57,7 +57,6 @@ export function EditClientDialog({
     setLoading(true);
 
     try {
-      const apiClient = new IamApiClient();
       const clientsApi = new ClientsApi(apiClient);
 
       const redirectUrisList = formData.redirectUris

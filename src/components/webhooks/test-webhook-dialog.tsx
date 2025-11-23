@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { IamApiClient } from '@/lib/api/client';
+import { apiClient } from '@/lib/api/client';
 import { type Webhook, WebhooksApi } from '@/lib/api/webhooks';
 
 interface TestWebhookDialogProps {
@@ -35,8 +35,7 @@ export function TestWebhookDialog({
     setError(null);
     setSuccess(false);
 
-    const client = new IamApiClient();
-    const webhooksApi = new WebhooksApi(client);
+    const webhooksApi = new WebhooksApi(apiClient);
 
     const result = await webhooksApi.test(webhook.id);
 

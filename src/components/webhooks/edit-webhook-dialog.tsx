@@ -14,7 +14,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { IamApiClient } from '@/lib/api/client';
+import { apiClient } from '@/lib/api/client';
 import { type Webhook, WebhooksApi } from '@/lib/api/webhooks';
 
 interface EditWebhookDialogProps {
@@ -128,8 +128,7 @@ export function EditWebhookDialog({
     setLoading(true);
     setError(null);
 
-    const client = new IamApiClient();
-    const webhooksApi = new WebhooksApi(client);
+    const webhooksApi = new WebhooksApi(apiClient);
 
     const result = await webhooksApi.update(webhook.id, {
       url,

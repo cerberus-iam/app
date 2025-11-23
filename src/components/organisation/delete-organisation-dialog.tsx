@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { IamApiClient } from '@/lib/api/client';
+import { apiClient } from '@/lib/api/client';
 import type { Organisation } from '@/lib/api/organisation';
 import { OrganisationApi } from '@/lib/api/organisation';
 
@@ -45,7 +45,6 @@ export function DeleteOrganisationDialog({
     setLoading(true);
 
     try {
-      const apiClient = new IamApiClient();
       const organisationApi = new OrganisationApi(apiClient);
 
       const result = await organisationApi.delete();

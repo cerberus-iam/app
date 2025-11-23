@@ -12,7 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { IamApiClient } from '@/lib/api/client';
+import { apiClient } from '@/lib/api/client';
 import type { OAuth2Client } from '@/lib/api/clients';
 import { ClientsApi } from '@/lib/api/clients';
 
@@ -36,7 +36,6 @@ export function RevokeClientDialog({
     setLoading(true);
 
     try {
-      const apiClient = new IamApiClient();
       const clientsApi = new ClientsApi(apiClient);
 
       const result = await clientsApi.revoke(client.id);

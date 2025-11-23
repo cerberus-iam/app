@@ -31,7 +31,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { IamApiClient } from '@/lib/api/client';
+import { apiClient } from '@/lib/api/client';
 
 export function NavUser({
   user,
@@ -49,8 +49,7 @@ export function NavUser({
 
   const handleLogout = async () => {
     try {
-      const client = new IamApiClient();
-      await client.request('/v1/auth/logout', { method: 'POST' });
+      await apiClient.request('/v1/auth/logout', { method: 'POST' });
       router.push('/login');
     } catch (error) {
       console.error('Logout failed:', error);

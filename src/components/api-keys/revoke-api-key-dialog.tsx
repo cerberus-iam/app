@@ -11,7 +11,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { type ApiKey, ApiKeysApi } from '@/lib/api/api-keys';
-import { IamApiClient } from '@/lib/api/client';
+import { apiClient } from '@/lib/api/client';
 
 interface RevokeApiKeyDialogProps {
   open: boolean;
@@ -33,8 +33,7 @@ export function RevokeApiKeyDialog({
     setLoading(true);
     setError(null);
 
-    const client = new IamApiClient();
-    const apiKeysApi = new ApiKeysApi(client);
+    const apiKeysApi = new ApiKeysApi(apiClient);
 
     const result = await apiKeysApi.revoke(apiKey.id);
 

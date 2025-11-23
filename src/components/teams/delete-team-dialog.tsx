@@ -12,7 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { IamApiClient } from '@/lib/api/client';
+import { apiClient } from '@/lib/api/client';
 import type { Team } from '@/lib/api/teams';
 import { TeamsApi } from '@/lib/api/teams';
 
@@ -36,8 +36,7 @@ export function DeleteTeamDialog({
     setLoading(true);
 
     try {
-      const client = new IamApiClient();
-      const teamsApi = new TeamsApi(client);
+      const teamsApi = new TeamsApi(apiClient);
 
       const result = await teamsApi.delete(team.id);
 

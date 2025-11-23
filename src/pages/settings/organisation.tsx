@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { AppLayout } from '@/layouts/app';
-import { IamApiClient } from '@/lib/api/client';
+import { apiClient } from '@/lib/api/client';
 import { OrganisationApi } from '@/lib/api/organisation';
 import { createServerApiClient } from '@/lib/auth/client-factory';
 import { requireAuth } from '@/lib/auth/redirects';
@@ -164,7 +164,6 @@ export default function OrganisationSettingsPage({
     setLoading(true);
 
     try {
-      const apiClient = new IamApiClient();
       const organisationApi = new OrganisationApi(apiClient);
 
       const result = await organisationApi.update({

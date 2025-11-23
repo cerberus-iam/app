@@ -15,7 +15,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ApiKeysApi } from '@/lib/api/api-keys';
-import { IamApiClient } from '@/lib/api/client';
+import { apiClient } from '@/lib/api/client';
 
 interface CreateApiKeyDialogProps {
   open: boolean;
@@ -38,8 +38,7 @@ export function CreateApiKeyDialog({
     setLoading(true);
     setError(null);
 
-    const client = new IamApiClient();
-    const apiKeysApi = new ApiKeysApi(client);
+    const apiKeysApi = new ApiKeysApi(apiClient);
 
     const result = await apiKeysApi.create({
       name,
