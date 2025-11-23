@@ -76,27 +76,28 @@ export class MeApi {
     });
   }
 
-  async verifyMfa(code: string): Promise<Result<void, ApiError>> {
+  async verifyMfa(token: string): Promise<Result<void, ApiError>> {
     return this.client.request<void>('/v1/me/mfa/verify', {
       method: 'POST',
-      body: { code },
+      body: { token }, // API expects 'token', not 'code'
     });
   }
 
-  async disableMfa(code: string): Promise<Result<void, ApiError>> {
+  async disableMfa(token: string): Promise<Result<void, ApiError>> {
     return this.client.request<void>('/v1/me/mfa/disable', {
       method: 'POST',
-      body: { code },
+      body: { token }, // API expects 'token', not 'code'
     });
   }
 
-  async regenerateBackupCodes(): Promise<
-    Result<{ backupCodes: string[] }, ApiError>
-  > {
+  async regenerateBackupCodes(
+    token: string
+  ): Promise<Result<{ backupCodes: string[] }, ApiError>> {
     return this.client.request<{ backupCodes: string[] }>(
       '/v1/me/mfa/backup-codes',
       {
         method: 'POST',
+        body: { token }, // API requires token for verification
       }
     );
   }

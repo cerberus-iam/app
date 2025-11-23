@@ -44,7 +44,7 @@ export function CreateClientDialog({
     name: '',
     clientType: 'confidential' as 'confidential' | 'public',
     redirectUris: '',
-    allowedScopes: 'openid profile email',
+    scopes: 'openid profile email',
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -60,7 +60,7 @@ export function CreateClientDialog({
         .map((uri) => uri.trim())
         .filter((uri) => uri.length > 0);
 
-      const scopesList = formData.allowedScopes
+      const scopesList = formData.scopes
         .split(' ')
         .map((scope) => scope.trim())
         .filter((scope) => scope.length > 0);
@@ -69,11 +69,7 @@ export function CreateClientDialog({
         name: formData.name,
         clientType: formData.clientType,
         redirectUris: redirectUrisList,
-        allowedScopes: scopesList,
-        tokenEndpointAuthMethod:
-          formData.clientType === 'confidential'
-            ? 'client_secret_post'
-            : undefined,
+        scopes: scopesList,
       });
 
       if (!result.ok) {
@@ -93,7 +89,7 @@ export function CreateClientDialog({
           name: '',
           clientType: 'confidential',
           redirectUris: '',
-          allowedScopes: 'openid profile email',
+          scopes: 'openid profile email',
         });
         onOpenChange(false);
         router.reload();
@@ -119,7 +115,7 @@ export function CreateClientDialog({
       name: '',
       clientType: 'confidential',
       redirectUris: '',
-      allowedScopes: 'openid profile email',
+      scopes: 'openid profile email',
     });
     setCreatedSecret(null);
     setSecretCopied(false);
@@ -135,7 +131,7 @@ export function CreateClientDialog({
           name: '',
           clientType: 'confidential',
           redirectUris: '',
-          allowedScopes: 'openid profile email',
+          scopes: 'openid profile email',
         });
         setError(null);
       }
@@ -296,16 +292,16 @@ export function CreateClientDialog({
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="allowedScopes">
-                Allowed Scopes <span className="text-destructive">*</span>
+              <Label htmlFor="scopes">
+                Scopes <span className="text-destructive">*</span>
               </Label>
               <Input
-                id="allowedScopes"
-                value={formData.allowedScopes}
+                id="scopes"
+                value={formData.scopes}
                 onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev,
-                    allowedScopes: e.target.value,
+                    scopes: e.target.value,
                   }))
                 }
                 placeholder="openid profile email"

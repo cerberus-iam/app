@@ -117,7 +117,7 @@ export function CreateWebhookDialog({
     const result = await webhooksApi.create({
       url,
       events: Array.from(selectedEvents),
-      secret: secret || undefined,
+      clientId: secret || undefined, // API expects 'clientId', not 'secret'
     });
 
     setLoading(false);

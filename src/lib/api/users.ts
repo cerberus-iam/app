@@ -26,15 +26,18 @@ export interface CreateUserRequest {
   email: string;
   firstName: string;
   lastName: string;
-  password: string;
+  password?: string; // Optional - API can generate temporary password
   roleIds?: string[];
+  teamIds?: string[]; // Optional - assign user to teams on creation
 }
 
 export interface UpdateUserRequest {
   firstName?: string;
   lastName?: string;
-  email?: string;
   phone?: string;
+  blockedAt?: string | null; // ISO 8601 datetime when user was blocked
+  blockedReason?: string | null; // Reason for blocking
+  mfaEnabled?: boolean; // Enable/disable MFA for user
 }
 
 export interface AssignRolesRequest {

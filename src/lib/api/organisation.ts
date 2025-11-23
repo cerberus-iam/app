@@ -8,7 +8,7 @@ export interface Organisation {
   name: string;
   slug: string;
   domain?: string;
-  mfaRequired: boolean;
+  requireMfa: boolean; // Match API field name
   sessionLifetime: number;
   createdAt: string;
   updatedAt: string;
@@ -16,8 +16,20 @@ export interface Organisation {
 
 export interface UpdateOrganisationData {
   name?: string;
-  mfaRequired?: boolean;
+  email?: string;
+  phone?: string;
+  website?: string;
+  allowedCallbackUrls?: string[];
+  allowedLogoutUrls?: string[];
+  allowedOrigins?: string[];
   sessionLifetime?: number;
+  sessionIdleTimeout?: number;
+  requireMfa?: boolean; // Match API field name (not mfaRequired)
+  allowedMfaMethods?: string[];
+  passwordPolicy?: Record<string, unknown>;
+  tokenLifetimePolicy?: Record<string, unknown>;
+  branding?: Record<string, unknown>;
+  metadata?: Record<string, unknown>;
 }
 
 export class OrganisationApi {

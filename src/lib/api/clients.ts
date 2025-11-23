@@ -10,7 +10,7 @@ export interface OAuth2Client {
   clientType: 'confidential' | 'public';
   isActive: boolean;
   redirectUris: string[];
-  allowedScopes: string[];
+  scopes: string[]; // OAuth scopes
   grantTypes: string[];
   tokenEndpointAuthMethod: string;
   createdAt: string;
@@ -19,16 +19,30 @@ export interface OAuth2Client {
 
 export interface CreateClientData {
   name: string;
+  description?: string;
   clientType: 'confidential' | 'public';
   redirectUris: string[];
-  allowedScopes: string[];
-  tokenEndpointAuthMethod?: string;
+  allowedOrigins?: string[];
+  scopes: string[]; // OAuth scopes (not allowedScopes)
+  requirePkce?: boolean;
+  requireConsent?: boolean;
+  isFirstParty?: boolean;
+  accessTokenLifetime?: number; // In seconds
+  refreshTokenLifetime?: number; // In seconds
+  idTokenLifetime?: number; // In seconds
 }
 
 export interface UpdateClientData {
   name?: string;
+  description?: string;
   redirectUris?: string[];
-  allowedScopes?: string[];
+  allowedOrigins?: string[];
+  scopes?: string[]; // OAuth scopes
+  requireConsent?: boolean;
+  isActive?: boolean;
+  accessTokenLifetime?: number; // In seconds
+  refreshTokenLifetime?: number; // In seconds
+  idTokenLifetime?: number; // In seconds
 }
 
 export interface ListClientsParams {

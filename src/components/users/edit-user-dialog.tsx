@@ -46,20 +46,20 @@ export function EditUserDialog({
   const [fieldErrors, setFieldErrors] = useState<FieldErrorMap>({});
 
   const [formData, setFormData] = useState<UpdateUserRequest>({
-    email: '',
     firstName: '',
     lastName: '',
     phone: '',
+    // email removed - API doesn't allow email updates via this endpoint
   });
 
   // Initialize form with user data when dialog opens
   useEffect(() => {
     if (user && open) {
       setFormData({
-        email: user.email,
         firstName: user.firstName || '',
         lastName: user.lastName || '',
         phone: user.phone || '',
+        // email removed - API doesn't allow email updates
       });
       setFormError(null);
       setFieldErrors({});
@@ -119,22 +119,7 @@ export function EditUserDialog({
               </div>
             )}
 
-            <Field data-invalid={Boolean(fieldErrors.email?.length)}>
-              <FieldLabel htmlFor="edit-email">Email</FieldLabel>
-              <Input
-                id="edit-email"
-                type="email"
-                autoComplete="email"
-                required
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-              />
-              {fieldErrors.email?.map((error, i) => (
-                <FieldError key={i}>{error}</FieldError>
-              ))}
-            </Field>
+            {/* Email field removed - API doesn't allow email updates via PATCH /users/:id */}
 
             <Field data-invalid={Boolean(fieldErrors.firstName?.length)}>
               <FieldLabel htmlFor="edit-firstName">First Name</FieldLabel>

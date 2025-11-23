@@ -78,7 +78,7 @@ export default function OrganisationSettingsPage({
 
   const [formData, setFormData] = useState({
     name: organisation.name,
-    mfaRequired: organisation.mfaRequired,
+    requireMfa: organisation.requireMfa,
     sessionLifetime: organisation.sessionLifetime,
   });
 
@@ -132,7 +132,7 @@ export default function OrganisationSettingsPage({
 
   const hasChanges =
     formData.name !== organisation.name ||
-    formData.mfaRequired !== organisation.mfaRequired ||
+    formData.requireMfa !== organisation.requireMfa ||
     currentSessionLifetimeSeconds !== organisation.sessionLifetime;
 
   const hasValidationErrors = Object.values(validationErrors).some(
@@ -192,7 +192,7 @@ export default function OrganisationSettingsPage({
       // Update local state to reflect saved changes
       setFormData({
         name: formData.name,
-        mfaRequired: formData.mfaRequired,
+        requireMfa: formData.requireMfa,
         sessionLifetime: currentSessionLifetimeSeconds,
       });
 
@@ -214,7 +214,7 @@ export default function OrganisationSettingsPage({
   const handleReset = () => {
     setFormData({
       name: organisation.name,
-      mfaRequired: organisation.mfaRequired,
+      requireMfa: organisation.requireMfa,
       sessionLifetime: organisation.sessionLifetime,
     });
     const resetSessionLifetime = secondsToFriendly(
@@ -347,7 +347,7 @@ export default function OrganisationSettingsPage({
               <div className="space-y-4 px-6 py-4">
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <Label htmlFor="mfaRequired">
+                    <Label htmlFor="requireMfa">
                       Require Multi-Factor Authentication
                     </Label>
                     <p className="text-muted-foreground text-sm">
@@ -355,10 +355,10 @@ export default function OrganisationSettingsPage({
                     </p>
                   </div>
                   <Switch
-                    id="mfaRequired"
-                    checked={formData.mfaRequired}
+                    id="requireMfa"
+                    checked={formData.requireMfa}
                     onCheckedChange={(checked: boolean) =>
-                      setFormData((prev) => ({ ...prev, mfaRequired: checked }))
+                      setFormData((prev) => ({ ...prev, requireMfa: checked }))
                     }
                     disabled={loading}
                   />

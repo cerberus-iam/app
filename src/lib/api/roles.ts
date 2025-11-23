@@ -54,13 +54,15 @@ export interface CreateRoleRequest {
   name: string;
   slug: string;
   description?: string;
-  permissions?: string[];
+  isDefault?: boolean; // Whether this is the default role for new users
+  permissionIds?: string[]; // Match API field name (not 'permissions')
 }
 
 export interface UpdateRoleRequest {
   name?: string;
   description?: string;
-  permissions?: string[];
+  isDefault?: boolean; // Whether this is the default role for new users
+  // Note: permissionIds not included in update - use add/remove permission endpoints instead
 }
 
 export interface AddPermissionRequest {

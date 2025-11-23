@@ -46,7 +46,7 @@ export function CreateRoleDialog({
     name: '',
     slug: '',
     description: '',
-    permissions: [],
+    permissionIds: [], // API expects permissionIds, not permissions
   });
 
   const handleSubmit = useCallback(
@@ -65,7 +65,7 @@ export function CreateRoleDialog({
           name: '',
           slug: '',
           description: '',
-          permissions: [],
+          permissionIds: [], // API expects permissionIds, not permissions
         });
         router.replace(router.asPath);
       } else {

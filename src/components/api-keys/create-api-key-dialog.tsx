@@ -27,7 +27,8 @@ export function CreateApiKeyDialog({
   onOpenChange,
 }: CreateApiKeyDialogProps) {
   const [name, setName] = useState('');
-  const [expiresAt, setExpiresAt] = useState('');
+  const [scopes, setScopes] = useState('read:* write:*');
+  const [expiresInDays, setExpiresInDays] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [createdKey, setCreatedKey] = useState<string | null>(null);
@@ -40,9 +41,15 @@ export function CreateApiKeyDialog({
 
     const apiKeysApi = new ApiKeysApi(apiClient);
 
+    const scopesList = scopes
+      .split(' ')
+      .map((s) => s.trim())
+      .filter((s) => s.length > 0);
+
     const result = await apiKeysApi.create({
       name,
-      expiresAt: expiresAt || null,
+      scopes: scopesList,
+      expiresInDays: expiresInDays ? parseInt(expiresInDays, 10) : undefined,
     });
 
     setLoading(false);
@@ -69,7 +76,8 @@ export function CreateApiKeyDialog({
       window.location.reload();
     } else {
       setName('');
-      setExpiresAt('');
+      setScopes('read:* write:*');
+      setExpiresInDays('');
       setError(null);
       setCopied(false);
       onOpenChange(false);
@@ -104,15 +112,33 @@ export function CreateApiKeyDialog({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="expiresAt">
-                Expires At{' '}
+              <Label htmlFor="scopes">
+                Scopes <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="scopes"
+                value={scopes}
+                onChange={(e) => setScopes(e.target.value)}
+                placeholder="read:* write:*"
+                required
+              />
+              <p className="text-muted-foreground text-xs">
+                Space-separated permission scopes (e.g., read:users write:users)
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="expiresInDays">
+                Expires In (Days){' '}
                 <span className="text-muted-foreground">(optional)</span>
               </Label>
               <Input
-                id="expiresAt"
-                type="datetime-local"
-                value={expiresAt}
-                onChange={(e) => setExpiresAt(e.target.value)}
+                id="expiresInDays"
+                type="number"
+                min="1"
+                value={expiresInDays}
+                onChange={(e) => setExpiresInDays(e.target.value)}
+                placeholder="90"
               />
               <p className="text-muted-foreground text-xs">
                 Leave blank for no expiration

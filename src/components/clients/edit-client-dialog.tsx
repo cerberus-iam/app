@@ -37,7 +37,7 @@ export function EditClientDialog({
   const [formData, setFormData] = useState(() => ({
     name: client.name,
     redirectUris: client.redirectUris.join('\n'),
-    allowedScopes: client.allowedScopes.join(' '),
+    scopes: client.scopes.join(' '),
   }));
 
   // Reset form data when client changes
@@ -45,7 +45,7 @@ export function EditClientDialog({
     setFormData({
       name: client.name,
       redirectUris: client.redirectUris.join('\n'),
-      allowedScopes: client.allowedScopes.join(' '),
+      scopes: client.scopes.join(' '),
     });
     setError(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally sync form with client prop changes
@@ -64,7 +64,7 @@ export function EditClientDialog({
         .map((uri) => uri.trim())
         .filter((uri) => uri.length > 0);
 
-      const scopesList = formData.allowedScopes
+      const scopesList = formData.scopes
         .split(' ')
         .map((scope) => scope.trim())
         .filter((scope) => scope.length > 0);
@@ -72,7 +72,7 @@ export function EditClientDialog({
       const result = await clientsApi.update(client.id, {
         name: formData.name,
         redirectUris: redirectUrisList,
-        allowedScopes: scopesList,
+        scopes: scopesList,
       });
 
       if (!result.ok) {
@@ -182,16 +182,16 @@ export function EditClientDialog({
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="allowedScopes">
-                Allowed Scopes <span className="text-destructive">*</span>
+              <Label htmlFor="scopes">
+                Scopes <span className="text-destructive">*</span>
               </Label>
               <Input
-                id="allowedScopes"
-                value={formData.allowedScopes}
+                id="scopes"
+                value={formData.scopes}
                 onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev,
-                    allowedScopes: e.target.value,
+                    scopes: e.target.value,
                   }))
                 }
                 required

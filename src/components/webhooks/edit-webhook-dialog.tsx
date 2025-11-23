@@ -89,7 +89,7 @@ export function EditWebhookDialog({
 }: EditWebhookDialogProps) {
   // Initialize state from webhook prop
   const [url, setUrl] = useState(() => webhook?.url || '');
-  const [active, setActive] = useState(() => webhook?.active ?? true);
+  const [active, setActive] = useState(() => webhook?.isActive ?? true); // API uses 'isActive'
   const [selectedEvents, setSelectedEvents] = useState<Set<string>>(
     () => new Set(webhook?.events || [])
   );
@@ -100,7 +100,7 @@ export function EditWebhookDialog({
   useEffect(() => {
     if (webhook) {
       setUrl(webhook.url);
-      setActive(webhook.active);
+      setActive(webhook.isActive); // API uses 'isActive'
       setSelectedEvents(new Set(webhook.events));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally sync form with webhook prop changes
@@ -133,7 +133,7 @@ export function EditWebhookDialog({
     const result = await webhooksApi.update(webhook.id, {
       url,
       events: Array.from(selectedEvents),
-      active,
+      isActive: active, // API expects 'isActive', not 'active'
     });
 
     setLoading(false);

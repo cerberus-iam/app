@@ -7,7 +7,7 @@ export interface Webhook {
   id: string;
   url: string;
   events: string[];
-  active: boolean;
+  isActive: boolean; // Match API field name
   createdAt: string;
   lastTriggeredAt: string | null;
 }
@@ -15,13 +15,13 @@ export interface Webhook {
 export interface CreateWebhookRequest {
   url: string;
   events: string[];
-  secret?: string;
+  clientId?: string; // Optional OAuth client ID to associate with webhook
 }
 
 export interface UpdateWebhookRequest {
   url?: string;
   events?: string[];
-  active?: boolean;
+  isActive?: boolean; // Match API field name (not 'active')
 }
 
 export interface ListWebhooksParams {
