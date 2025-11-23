@@ -1,10 +1,14 @@
+import { useTheme } from 'next-themes';
 import { useRouter } from 'next/router';
 
 import {
+  IconDeviceDesktop,
   IconDotsVertical,
   IconKey,
   IconLogout,
+  IconMoon,
   IconShieldLock,
+  IconSun,
   IconUserCircle,
 } from '@tabler/icons-react';
 
@@ -16,6 +20,9 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
@@ -38,6 +45,7 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar();
   const router = useRouter();
+  const { setTheme, theme } = useTheme();
 
   const handleLogout = async () => {
     try {
@@ -111,6 +119,36 @@ export function NavUser({
                 <IconShieldLock />
                 Security
               </DropdownMenuItem>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <IconSun className="h-4 w-4 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+                  <IconMoon className="absolute h-4 w-4 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+                  <span className="ml-2">Theme</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem onClick={() => setTheme('light')}>
+                    <IconSun className="mr-2 h-4 w-4" />
+                    <span>Light</span>
+                    {theme === 'light' && (
+                      <span className="ml-auto text-xs">✓</span>
+                    )}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setTheme('dark')}>
+                    <IconMoon className="mr-2 h-4 w-4" />
+                    <span>Dark</span>
+                    {theme === 'dark' && (
+                      <span className="ml-auto text-xs">✓</span>
+                    )}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setTheme('system')}>
+                    <IconDeviceDesktop className="mr-2 h-4 w-4" />
+                    <span>System</span>
+                    {theme === 'system' && (
+                      <span className="ml-auto text-xs">✓</span>
+                    )}
+                  </DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>

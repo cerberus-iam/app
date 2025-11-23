@@ -10,6 +10,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 
 import { DataTableColumnHeader } from '@/components/data-table-column-header';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -26,7 +27,34 @@ import type { User } from '@/types/iam';
 interface ColumnContext {
   onEdit: (user: User) => void;
   onDelete: (user: User) => void;
+  onManageRoles: (user: User) => void;
 }
+
+// Helper function to get user initials
+const getInitials = (user: User): string => {
+  if (user.firstName && user.lastName) {
+    return `${user.firstName[0]}${user.lastName[0]}`.toUpperCase();
+  }
+  if (user.name) {
+    const parts = user.name.split(' ');
+    if (parts.length >= 2) {
+      return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+    }
+    return user.name.slice(0, 2).toUpperCase();
+  }
+  return user.email.slice(0, 2).toUpperCase();
+};
+
+// Helper function to get display name
+const getDisplayName = (user: User): string => {
+  if (user.name) return user.name;
+  if (user.firstName && user.lastName) {
+    return `${user.firstName} ${user.lastName}`;
+  }
+  if (user.firstName) return user.firstName;
+  if (user.lastName) return user.lastName;
+  return user.email.split('@')[0];
+};
 
 export const createColumns = (context: ColumnContext): ColumnDef<User>[] => [
   {
@@ -52,37 +80,34 @@ export const createColumns = (context: ColumnContext): ColumnDef<User>[] => [
     enableHiding: false,
   },
   {
+    id: 'user',
     accessorKey: 'email',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Email" />
+      <DataTableColumnHeader column={column} title="User" />
     ),
     cell: ({ row }) => {
       const user = row.original;
+      const displayName = getDisplayName(user);
+      const initials = getInitials(user);
+
       return (
-        <div className="flex items-center gap-2">
-          <span className="font-medium">{user.email}</span>
-          {user.emailVerifiedAt ? (
-            <IconMailCheck className="size-4 text-green-600" />
-          ) : (
-            <IconMail className="text-muted-foreground size-4" />
-          )}
+        <div className="flex items-center gap-3">
+          <Avatar className="h-9 w-9">
+            <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col">
+            <div className="flex items-center gap-2">
+              <span className="font-medium">{displayName}</span>
+              {user.emailVerifiedAt ? (
+                <IconMailCheck className="size-3.5 text-green-600" />
+              ) : (
+                <IconMail className="text-muted-foreground size-3.5" />
+              )}
+            </div>
+            <span className="text-muted-foreground text-sm">{user.email}</span>
+          </div>
         </div>
       );
-    },
-  },
-  {
-    accessorKey: 'name',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
-    ),
-    cell: ({ row }) => {
-      const user = row.original;
-      const displayName =
-        user.name ||
-        (user.firstName && user.lastName
-          ? `${user.firstName} ${user.lastName}`
-          : user.firstName || user.lastName || '-');
-      return <div>{displayName}</div>;
     },
   },
   {
@@ -187,7 +212,9 @@ export const createColumns = (context: ColumnContext): ColumnDef<User>[] => [
             <DropdownMenuItem onClick={() => context.onEdit(user)}>
               Edit user
             </DropdownMenuItem>
-            <DropdownMenuItem>Manage roles</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => context.onManageRoles(user)}>
+              Manage roles
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             {user.blockedAt ? (
               <DropdownMenuItem>Unblock user</DropdownMenuItem>

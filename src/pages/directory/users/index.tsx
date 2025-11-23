@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { CreateUserDialog } from '@/components/users/create-user-dialog';
 import { DeleteUserDialog } from '@/components/users/delete-user-dialog';
 import { EditUserDialog } from '@/components/users/edit-user-dialog';
+import { ManageUserRolesDialog } from '@/components/users/manage-user-roles-dialog';
 import { AppLayout } from '@/layouts/app';
 import { createServerApiClient } from '@/lib/auth/client-factory';
 import { requireAuth } from '@/lib/auth/redirects';
@@ -33,6 +34,7 @@ export default function UsersPage({
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [manageRolesDialogOpen, setManageRolesDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const handleEdit = (user: User) => {
@@ -45,12 +47,22 @@ export default function UsersPage({
     setDeleteDialogOpen(true);
   };
 
+  const handleManageRoles = (user: User) => {
+    setSelectedUser(user);
+    setManageRolesDialogOpen(true);
+  };
+
   const handleCreateUser = () => {
     setCreateDialogOpen(true);
   };
 
   const columns = useMemo(
-    () => createColumns({ onEdit: handleEdit, onDelete: handleDelete }),
+    () =>
+      createColumns({
+        onEdit: handleEdit,
+        onDelete: handleDelete,
+        onManageRoles: handleManageRoles,
+      }),
     []
   );
 
@@ -124,6 +136,12 @@ export default function UsersPage({
         user={selectedUser}
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
+      />
+
+      <ManageUserRolesDialog
+        user={selectedUser}
+        open={manageRolesDialogOpen}
+        onOpenChange={setManageRolesDialogOpen}
       />
     </AppLayout>
   );
