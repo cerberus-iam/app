@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import Head from 'next/head';
 
 import { IconPlus } from '@tabler/icons-react';
 
@@ -60,59 +61,64 @@ export default function TeamsPage({
   ];
 
   return (
-    <AppLayout
-      user={user}
-      organisation={user.organisation}
-      breadcrumbs={breadcrumbs}
-      title="Teams"
-      docsUrl="https://docs.cerberus-iam.com/admin/teams"
-    >
-      <PageHeader
+    <>
+      <Head>
+        <title>Teams | Cerberus IAM</title>
+      </Head>
+      <AppLayout
+        user={user}
+        organisation={user.organisation}
+        breadcrumbs={breadcrumbs}
         title="Teams"
-        description={`Manage teams and their members in your organization.${total > 0 ? ` ${total} team${total === 1 ? '' : 's'} total.` : ''}`}
-        actions={
-          <Button onClick={() => setCreateDialogOpen(true)}>
-            <IconPlus className="mr-2 size-4" />
-            Add Team
-          </Button>
-        }
-      />
-      <div className="space-y-4 px-4 py-4 lg:px-6">
-        <DataTable
-          columns={columns}
-          data={teams}
-          searchKey="name"
-          searchPlaceholder="Search teams..."
+        docsUrl="https://docs.cerberus-iam.com/admin/teams"
+      >
+        <PageHeader
+          title="Teams"
+          description={`Manage teams and their members in your organization.${total > 0 ? ` ${total} team${total === 1 ? '' : 's'} total.` : ''}`}
+          actions={
+            <Button onClick={() => setCreateDialogOpen(true)}>
+              <IconPlus className="mr-2 size-4" />
+              Add Team
+            </Button>
+          }
         />
-      </div>
-
-      <CreateTeamDialog
-        open={createDialogOpen}
-        onOpenChange={setCreateDialogOpen}
-      />
-
-      {selectedTeam && (
-        <>
-          <EditTeamDialog
-            open={editDialogOpen}
-            onOpenChange={setEditDialogOpen}
-            team={selectedTeam}
+        <div className="space-y-4 px-4 py-4 lg:px-6">
+          <DataTable
+            columns={columns}
+            data={teams}
+            searchKey="name"
+            searchPlaceholder="Search teams..."
           />
+        </div>
 
-          <DeleteTeamDialog
-            open={deleteDialogOpen}
-            onOpenChange={setDeleteDialogOpen}
-            team={selectedTeam}
-          />
+        <CreateTeamDialog
+          open={createDialogOpen}
+          onOpenChange={setCreateDialogOpen}
+        />
 
-          <ManageMembersDialog
-            open={manageMembersDialogOpen}
-            onOpenChange={setManageMembersDialogOpen}
-            team={selectedTeam}
-          />
-        </>
-      )}
-    </AppLayout>
+        {selectedTeam && (
+          <>
+            <EditTeamDialog
+              open={editDialogOpen}
+              onOpenChange={setEditDialogOpen}
+              team={selectedTeam}
+            />
+
+            <DeleteTeamDialog
+              open={deleteDialogOpen}
+              onOpenChange={setDeleteDialogOpen}
+              team={selectedTeam}
+            />
+
+            <ManageMembersDialog
+              open={manageMembersDialogOpen}
+              onOpenChange={setManageMembersDialogOpen}
+              team={selectedTeam}
+            />
+          </>
+        )}
+      </AppLayout>
+    </>
   );
 }
 

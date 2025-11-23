@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -11,7 +12,6 @@ import {
   IconSearch,
   IconSettings,
   IconShield,
-  IconShieldLock,
   IconUsers,
 } from '@tabler/icons-react';
 
@@ -188,7 +188,13 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
               className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
               <Link href="/dashboard">
-                <IconShieldLock className="size-5!" />
+                <Image
+                  src="/logo.svg"
+                  alt="Cerberus IAM"
+                  width={24}
+                  height={24}
+                  className="size-6!"
+                />
                 <span className="text-base font-semibold">Cerberus IAM</span>
               </Link>
             </SidebarMenuButton>

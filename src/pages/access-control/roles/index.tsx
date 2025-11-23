@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import Head from 'next/head';
 
 import { IconPlus } from '@tabler/icons-react';
 
@@ -63,68 +64,73 @@ export default function RolesPage({
   ];
 
   return (
-    <AppLayout
-      user={user}
-      organisation={user.organisation}
-      breadcrumbs={breadcrumbs}
-      title="Roles & Permissions"
-      docsUrl="https://docs.cerberus-iam.com/admin/roles"
-    >
-      <PageHeader
+    <>
+      <Head>
+        <title>Roles & Permissions | Cerberus IAM</title>
+      </Head>
+      <AppLayout
+        user={user}
+        organisation={user.organisation}
+        breadcrumbs={breadcrumbs}
         title="Roles & Permissions"
-        description={`Create and manage roles to control access to your organization.${total > 0 ? ` ${total} role${total === 1 ? '' : 's'} configured.` : ''}`}
-        actions={
-          <Button onClick={() => setCreateDialogOpen(true)}>
-            <IconPlus className="mr-2 size-4" />
-            Create Role
-          </Button>
-        }
-      />
-      <div className="space-y-4 px-4 py-4 lg:px-6">
-        <DataTable
-          columns={columns}
-          data={roles}
-          searchKey="name"
-          searchPlaceholder="Search roles..."
-          emptyState={{
-            title: total === 0 ? 'No roles yet' : 'No roles found',
-            description:
-              total === 0
-                ? 'Get started by creating your first role to manage access control.'
-                : "Try adjusting your search to find what you're looking for.",
-            ...(total === 0 && {
-              action: {
-                label: 'Create Role',
-                onClick: handleCreateRole,
-              },
-            }),
-          }}
+        docsUrl="https://docs.cerberus-iam.com/admin/roles"
+      >
+        <PageHeader
+          title="Roles & Permissions"
+          description={`Create and manage roles to control access to your organization.${total > 0 ? ` ${total} role${total === 1 ? '' : 's'} configured.` : ''}`}
+          actions={
+            <Button onClick={() => setCreateDialogOpen(true)}>
+              <IconPlus className="mr-2 size-4" />
+              Create Role
+            </Button>
+          }
         />
-      </div>
+        <div className="space-y-4 px-4 py-4 lg:px-6">
+          <DataTable
+            columns={columns}
+            data={roles}
+            searchKey="name"
+            searchPlaceholder="Search roles..."
+            emptyState={{
+              title: total === 0 ? 'No roles yet' : 'No roles found',
+              description:
+                total === 0
+                  ? 'Get started by creating your first role to manage access control.'
+                  : "Try adjusting your search to find what you're looking for.",
+              ...(total === 0 && {
+                action: {
+                  label: 'Create Role',
+                  onClick: handleCreateRole,
+                },
+              }),
+            }}
+          />
+        </div>
 
-      <CreateRoleDialog
-        open={createDialogOpen}
-        onOpenChange={setCreateDialogOpen}
-      />
+        <CreateRoleDialog
+          open={createDialogOpen}
+          onOpenChange={setCreateDialogOpen}
+        />
 
-      <EditRoleDialog
-        role={selectedRole}
-        open={editDialogOpen}
-        onOpenChange={setEditDialogOpen}
-      />
+        <EditRoleDialog
+          role={selectedRole}
+          open={editDialogOpen}
+          onOpenChange={setEditDialogOpen}
+        />
 
-      <DeleteRoleDialog
-        role={selectedRole}
-        open={deleteDialogOpen}
-        onOpenChange={setDeleteDialogOpen}
-      />
+        <DeleteRoleDialog
+          role={selectedRole}
+          open={deleteDialogOpen}
+          onOpenChange={setDeleteDialogOpen}
+        />
 
-      <ManagePermissionsDialog
-        role={selectedRole}
-        open={permissionsDialogOpen}
-        onOpenChange={setPermissionsDialogOpen}
-      />
-    </AppLayout>
+        <ManagePermissionsDialog
+          role={selectedRole}
+          open={permissionsDialogOpen}
+          onOpenChange={setPermissionsDialogOpen}
+        />
+      </AppLayout>
+    </>
   );
 }
 

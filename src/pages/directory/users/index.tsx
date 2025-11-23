@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import Head from 'next/head';
 
 import { IconPlus } from '@tabler/icons-react';
 
@@ -72,78 +73,83 @@ export default function UsersPage({
   ];
 
   return (
-    <AppLayout
-      user={user}
-      organisation={user.organisation}
-      breadcrumbs={breadcrumbs}
-      title="Users"
-      docsUrl="https://docs.cerberus-iam.com/admin/users"
-    >
-      <PageHeader
+    <>
+      <Head>
+        <title>Users | Cerberus IAM</title>
+      </Head>
+      <AppLayout
+        user={user}
+        organisation={user.organisation}
+        breadcrumbs={breadcrumbs}
         title="Users"
-        description={`Manage users, roles, and permissions for your organization.${total > 0 ? ` ${total} user${total === 1 ? '' : 's'} total.` : ''}`}
-        actions={
-          <Button onClick={() => setCreateDialogOpen(true)}>
-            <IconPlus className="mr-2 size-4" />
-            Add User
-          </Button>
-        }
-      />
-      <div className="space-y-4 px-4 py-4 lg:px-6">
-        <DataTable
-          columns={columns}
-          data={users}
-          searchKey="email"
-          searchPlaceholder="Search by email..."
-          facetedFilters={[
-            {
-              columnId: 'status',
-              title: 'Status',
-              options: [
-                { label: 'Active', value: 'active' },
-                { label: 'Blocked', value: 'blocked' },
-              ],
-            },
-          ]}
-          emptyState={{
-            title: total === 0 ? 'No users yet' : 'No users found',
-            description:
-              total === 0
-                ? 'Get started by adding your first user to the organization.'
-                : "Try adjusting your search or filters to find what you're looking for.",
-            ...(total === 0 && {
-              action: {
-                label: 'Add User',
-                onClick: handleCreateUser,
-              },
-            }),
-          }}
+        docsUrl="https://docs.cerberus-iam.com/admin/users"
+      >
+        <PageHeader
+          title="Users"
+          description={`Manage users, roles, and permissions for your organization.${total > 0 ? ` ${total} user${total === 1 ? '' : 's'} total.` : ''}`}
+          actions={
+            <Button onClick={() => setCreateDialogOpen(true)}>
+              <IconPlus className="mr-2 size-4" />
+              Add User
+            </Button>
+          }
         />
-      </div>
+        <div className="space-y-4 px-4 py-4 lg:px-6">
+          <DataTable
+            columns={columns}
+            data={users}
+            searchKey="email"
+            searchPlaceholder="Search by email..."
+            facetedFilters={[
+              {
+                columnId: 'status',
+                title: 'Status',
+                options: [
+                  { label: 'Active', value: 'active' },
+                  { label: 'Blocked', value: 'blocked' },
+                ],
+              },
+            ]}
+            emptyState={{
+              title: total === 0 ? 'No users yet' : 'No users found',
+              description:
+                total === 0
+                  ? 'Get started by adding your first user to the organization.'
+                  : "Try adjusting your search or filters to find what you're looking for.",
+              ...(total === 0 && {
+                action: {
+                  label: 'Add User',
+                  onClick: handleCreateUser,
+                },
+              }),
+            }}
+          />
+        </div>
 
-      <CreateUserDialog
-        open={createDialogOpen}
-        onOpenChange={setCreateDialogOpen}
-      />
+        <CreateUserDialog
+          open={createDialogOpen}
+          onOpenChange={setCreateDialogOpen}
+        />
 
-      <EditUserDialog
-        user={selectedUser}
-        open={editDialogOpen}
-        onOpenChange={setEditDialogOpen}
-      />
+        <EditUserDialog
+          user={selectedUser}
+          open={editDialogOpen}
+          onOpenChange={setEditDialogOpen}
+        />
 
-      <DeleteUserDialog
-        user={selectedUser}
-        open={deleteDialogOpen}
-        onOpenChange={setDeleteDialogOpen}
-      />
+        <DeleteUserDialog
+          user={selectedUser}
+          open={deleteDialogOpen}
+          onOpenChange={setDeleteDialogOpen}
+        />
 
-      <ManageUserRolesDialog
-        user={selectedUser}
-        open={manageRolesDialogOpen}
-        onOpenChange={setManageRolesDialogOpen}
-      />
-    </AppLayout>
+        <ManageUserRolesDialog
+          user={selectedUser}
+          open={manageRolesDialogOpen}
+          onOpenChange={setManageRolesDialogOpen}
+        />
+      </AppLayout>
+    </>
   );
 }
 

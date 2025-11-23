@@ -15,6 +15,8 @@ import { Separator } from '@/components/ui/separator';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import type { OrganisationSummary } from '@/types/iam';
 
+import { Badge } from './ui/badge';
+
 interface SiteHeaderProps {
   breadcrumbs?: Array<{
     label: string;
@@ -70,9 +72,7 @@ export function SiteHeader({
                 <IconBuilding className="size-4" />
                 <span className="font-medium">{organisation.name}</span>
                 {organisation.slug && (
-                  <span className="text-muted-foreground/60">
-                    ({organisation.slug})
-                  </span>
+                  <Badge variant="outline">{organisation.slug}</Badge>
                 )}
               </div>
               <Separator

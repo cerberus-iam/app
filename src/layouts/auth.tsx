@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
+import Image from 'next/image';
 import Link from 'next/link';
-
-import { GalleryVerticalEnd } from 'lucide-react';
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -13,9 +12,13 @@ export function AuthLayout({ children }: AuthLayoutProps) {
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
           <Link href="/" className="flex items-center gap-2 font-medium">
-            <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
-              <GalleryVerticalEnd className="size-4" />
-            </div>
+            <Image
+              src="/logo.svg"
+              alt="Cerberus IAM"
+              width={32}
+              height={32}
+              className="size-8"
+            />
             Cerberus IAM
           </Link>
         </div>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import Head from 'next/head';
 
 import {
   Key,
@@ -53,186 +54,192 @@ export default function DashboardPage({
   const [showCreateInvitation, setShowCreateInvitation] = useState(false);
 
   return (
-    <AppLayout
-      user={user}
-      organisation={user.organisation}
-      breadcrumbs={[{ label: 'Dashboard' }]}
-    >
-      <div className="flex flex-col gap-6 px-4 py-6 lg:px-6 lg:py-8">
-        {/* Page Header */}
-        <div className="space-y-1">
-          <h1 className="text-2xl font-semibold tracking-tight lg:text-3xl">
-            Dashboard
-          </h1>
-          <p className="text-muted-foreground text-sm lg:text-base">
-            Overview of your organization&apos;s identity and access management.
-          </p>
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <StatCard
-            title="Total Users"
-            value={overviewStats?.totalUsers ?? usersCount}
-            icon={Users}
-            href="/directory/users"
-            trend={
-              overviewStats?.trends.users30d
-                ? {
-                    value: overviewStats.trends.users30d,
-                    label: 'from last month',
-                  }
-                : undefined
-            }
-          />
-          <StatCard
-            title="Active Users (30d)"
-            value={overviewStats?.activeUsers30d ?? 0}
-            icon={Users}
-            href="/directory/users"
-          />
-          <StatCard
-            title="MFA Adoption"
-            value={
-              overviewStats?.mfaAdoptionRate
-                ? `${overviewStats.mfaAdoptionRate}%`
-                : '0%'
-            }
-            icon={ShieldCheck}
-            href="/directory/users"
-          />
-          <StatCard
-            title="Active Sessions"
-            value={overviewStats?.totalSessions ?? 0}
-            icon={Laptop}
-            href="/audit/logs"
-          />
-          <StatCard
-            title="OAuth Clients"
-            value={overviewStats?.totalClients ?? clientsCount}
-            icon={Laptop}
-            href="/applications/clients"
-            trend={
-              overviewStats?.trends.clients30d
-                ? {
-                    value: overviewStats.trends.clients30d,
-                    label: 'from last month',
-                  }
-                : undefined
-            }
-          />
-          <StatCard
-            title="API Keys"
-            value={overviewStats?.totalApiKeys ?? apiKeysCount}
-            icon={Key}
-            href="/settings/api-keys"
-          />
-          <StatCard
-            title="Pending Invitations"
-            value={pendingInvitationsCount}
-            icon={Mail}
-            href="/settings/invitations"
-          />
-          <StatCard
-            title="Active Webhooks"
-            value={activeWebhooksCount}
-            icon={Webhook}
-            href="/settings/webhooks"
-          />
-        </div>
-
-        {/* Quick Actions */}
-        <div className="space-y-4">
+    <>
+      <Head>
+        <title>Dashboard | Cerberus IAM</title>
+      </Head>
+      <AppLayout
+        user={user}
+        organisation={user.organisation}
+        breadcrumbs={[{ label: 'Dashboard' }]}
+      >
+        <div className="flex flex-col gap-6 px-4 py-6 lg:px-6 lg:py-8">
+          {/* Page Header */}
           <div className="space-y-1">
-            <h2 className="text-lg font-semibold">Quick Actions</h2>
-            <p className="text-muted-foreground text-sm">
-              Common tasks and shortcuts for your organization
+            <h1 className="text-2xl font-semibold tracking-tight lg:text-3xl">
+              Dashboard
+            </h1>
+            <p className="text-muted-foreground text-sm lg:text-base">
+              Overview of your organization&apos;s identity and access
+              management.
             </p>
           </div>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <QuickActionCard
-              title="Create User"
-              description="Add a new user to your organisation"
-              icon={UserPlus}
-              action="Create User"
-              onAction={() => setShowCreateUser(true)}
+
+          {/* Stats Grid */}
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <StatCard
+              title="Total Users"
+              value={overviewStats?.totalUsers ?? usersCount}
+              icon={Users}
+              href="/directory/users"
+              trend={
+                overviewStats?.trends.users30d
+                  ? {
+                      value: overviewStats.trends.users30d,
+                      label: 'from last month',
+                    }
+                  : undefined
+              }
             />
-            <QuickActionCard
-              title="Send Invitation"
-              description="Invite someone to join your organisation"
-              icon={Send}
-              action="Send Invitation"
-              onAction={() => setShowCreateInvitation(true)}
+            <StatCard
+              title="Active Users (30d)"
+              value={overviewStats?.activeUsers30d ?? 0}
+              icon={Users}
+              href="/directory/users"
             />
+            <StatCard
+              title="MFA Adoption"
+              value={
+                overviewStats?.mfaAdoptionRate
+                  ? `${overviewStats.mfaAdoptionRate}%`
+                  : '0%'
+              }
+              icon={ShieldCheck}
+              href="/directory/users"
+            />
+            <StatCard
+              title="Active Sessions"
+              value={overviewStats?.totalSessions ?? 0}
+              icon={Laptop}
+              href="/audit/logs"
+            />
+            <StatCard
+              title="OAuth Clients"
+              value={overviewStats?.totalClients ?? clientsCount}
+              icon={Laptop}
+              href="/applications/clients"
+              trend={
+                overviewStats?.trends.clients30d
+                  ? {
+                      value: overviewStats.trends.clients30d,
+                      label: 'from last month',
+                    }
+                  : undefined
+              }
+            />
+            <StatCard
+              title="API Keys"
+              value={overviewStats?.totalApiKeys ?? apiKeysCount}
+              icon={Key}
+              href="/settings/api-keys"
+            />
+            <StatCard
+              title="Pending Invitations"
+              value={pendingInvitationsCount}
+              icon={Mail}
+              href="/settings/invitations"
+            />
+            <StatCard
+              title="Active Webhooks"
+              value={activeWebhooksCount}
+              icon={Webhook}
+              href="/settings/webhooks"
+            />
+          </div>
+
+          {/* Quick Actions */}
+          <div className="space-y-4">
+            <div className="space-y-1">
+              <h2 className="text-lg font-semibold">Quick Actions</h2>
+              <p className="text-muted-foreground text-sm">
+                Common tasks and shortcuts for your organization
+              </p>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <QuickActionCard
+                title="Create User"
+                description="Add a new user to your organisation"
+                icon={UserPlus}
+                action="Create User"
+                onAction={() => setShowCreateUser(true)}
+              />
+              <QuickActionCard
+                title="Send Invitation"
+                description="Invite someone to join your organisation"
+                icon={Send}
+                action="Send Invitation"
+                onAction={() => setShowCreateInvitation(true)}
+              />
+            </div>
+          </div>
+
+          {/* Analytics Charts */}
+          {activityStats && (
+            <div className="space-y-4">
+              <div className="space-y-1">
+                <h2 className="text-lg font-semibold">Activity Analytics</h2>
+                <p className="text-muted-foreground text-sm">
+                  User activity and authentication trends over the last 30 days
+                </p>
+              </div>
+              <div className="grid gap-4 md:grid-cols-2">
+                <ActivityChart
+                  data={activityStats.loginActivity}
+                  title="Login Activity"
+                  color="hsl(var(--chart-1))"
+                />
+                <ActivityChart
+                  data={activityStats.newUsers}
+                  title="New User Signups"
+                  color="hsl(var(--chart-2))"
+                />
+              </div>
+              <AuthEventsChart data={activityStats.authEvents} />
+            </div>
+          )}
+
+          {/* Security Insights */}
+          {securityStats && (
+            <div className="space-y-4">
+              <div className="space-y-1">
+                <h2 className="text-lg font-semibold">Security Overview</h2>
+                <p className="text-muted-foreground text-sm">
+                  Security metrics and user status breakdown
+                </p>
+              </div>
+              <div className="grid gap-4 md:grid-cols-2">
+                <SecurityInsights mfaBreakdown={securityStats.mfaBreakdown} />
+                <StatusPieChart data={securityStats.usersByStatus} />
+              </div>
+              <TopActivity
+                topActiveUsers={securityStats.topActiveUsers}
+                recentSignups={securityStats.recentSignups}
+              />
+            </div>
+          )}
+
+          {/* Recent Activity */}
+          <div className="space-y-4">
+            <div className="space-y-1">
+              <h2 className="text-lg font-semibold">Recent Activity</h2>
+              <p className="text-muted-foreground text-sm">
+                Latest security and audit events
+              </p>
+            </div>
+            <RecentActivity logs={recentLogs} />
           </div>
         </div>
 
-        {/* Analytics Charts */}
-        {activityStats && (
-          <div className="space-y-4">
-            <div className="space-y-1">
-              <h2 className="text-lg font-semibold">Activity Analytics</h2>
-              <p className="text-muted-foreground text-sm">
-                User activity and authentication trends over the last 30 days
-              </p>
-            </div>
-            <div className="grid gap-4 md:grid-cols-2">
-              <ActivityChart
-                data={activityStats.loginActivity}
-                title="Login Activity"
-                color="hsl(var(--chart-1))"
-              />
-              <ActivityChart
-                data={activityStats.newUsers}
-                title="New User Signups"
-                color="hsl(var(--chart-2))"
-              />
-            </div>
-            <AuthEventsChart data={activityStats.authEvents} />
-          </div>
-        )}
-
-        {/* Security Insights */}
-        {securityStats && (
-          <div className="space-y-4">
-            <div className="space-y-1">
-              <h2 className="text-lg font-semibold">Security Overview</h2>
-              <p className="text-muted-foreground text-sm">
-                Security metrics and user status breakdown
-              </p>
-            </div>
-            <div className="grid gap-4 md:grid-cols-2">
-              <SecurityInsights mfaBreakdown={securityStats.mfaBreakdown} />
-              <StatusPieChart data={securityStats.usersByStatus} />
-            </div>
-            <TopActivity
-              topActiveUsers={securityStats.topActiveUsers}
-              recentSignups={securityStats.recentSignups}
-            />
-          </div>
-        )}
-
-        {/* Recent Activity */}
-        <div className="space-y-4">
-          <div className="space-y-1">
-            <h2 className="text-lg font-semibold">Recent Activity</h2>
-            <p className="text-muted-foreground text-sm">
-              Latest security and audit events
-            </p>
-          </div>
-          <RecentActivity logs={recentLogs} />
-        </div>
-      </div>
-
-      <CreateUserDialog
-        open={showCreateUser}
-        onOpenChange={setShowCreateUser}
-      />
-      <CreateInvitationDialog
-        open={showCreateInvitation}
-        onOpenChange={setShowCreateInvitation}
-      />
-    </AppLayout>
+        <CreateUserDialog
+          open={showCreateUser}
+          onOpenChange={setShowCreateUser}
+        />
+        <CreateInvitationDialog
+          open={showCreateInvitation}
+          onOpenChange={setShowCreateInvitation}
+        />
+      </AppLayout>
+    </>
   );
 }
 
