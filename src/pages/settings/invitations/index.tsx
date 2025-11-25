@@ -119,17 +119,8 @@ export const getServerSideProps: GetServerSideProps = async (context) =>
       return { initialInvitations: [], total: 0 };
     }
 
-    // Handle both response formats: { data: [], pagination: {} } and { data: [], total: 0 }
-    const apiResponse = result.value as unknown as Record<string, unknown>;
-    const total =
-      ((apiResponse.pagination as Record<string, unknown> | undefined)
-        ?.total as number | undefined) ||
-      (apiResponse.total as number | undefined) ||
-      result.value.data.length ||
-      0;
-
     return {
       initialInvitations: result.value.data,
-      total,
+      total: result.value.pagination.total,
     };
   });
